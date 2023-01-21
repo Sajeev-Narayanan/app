@@ -1,0 +1,51 @@
+import React,{ useRef, useState } from 'react'
+import { BsImages } from "react-icons/bs";
+import { FaTimes } from "react-icons/fa";
+
+const AddDP = () => {
+
+    const [image, SetImage] = useState("");
+    const imageInput = useRef(null);
+    const resetShare = () => {
+      SetImage(null);
+    };
+
+  return (
+    <>
+    <div className="w-[150px] h-[150px] md:w-[350px] md:h-[350px] lg:w-[400px] lg:h-[400px] flex mx-auto mt-5  border-black border-2 rounded-full items-center justify-center">
+    {image ? (
+      <div
+        className="previewImage w-[95%] h-[95%] rounded-full bg-cover bg-center bg-no-repeat "
+        style={{
+          backgroundImage: `url(${URL.createObjectURL(image)})`,
+        }}
+      >
+        <FaTimes onClick={resetShare} />
+      </div>
+    ) : (
+      <div
+        className="w-[95%] h-[95%] flex flex-col bg-[#f6f6f6] cursor-pointer rounded-full items-center justify-center"
+        onClick={() => imageInput.current.click()}
+      >
+        <BsImages className="text-[30px]" />
+        <h1 className='text-sm md:text-base'>Add Profile Picture</h1>
+      </div>
+    )}
+  </div>
+  <input
+    onChange={(e) => {
+      SetImage(e.target.files[0]);
+      // console.log(image);
+    }}
+    type="file"
+    id="file"
+    ref={imageInput}
+    style={{ display: "none" }}
+    accept="image/x-png,image/gif,image/jpeg"
+    
+            />
+            </>
+  )
+}
+
+export default AddDP
