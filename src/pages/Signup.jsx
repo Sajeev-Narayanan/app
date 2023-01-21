@@ -4,12 +4,15 @@ import { useNavigate } from 'react-router-dom'
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import axios from '../config/axios'
 import UserOtpModal from '../components/UserOtpModal';
+import SignupWithGoogle from '../components/SignupWithGoogle';
 const Signup = () => {
 
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [passwordType, setPasswordType] = useState("password");
   const [Optmodal, setOtpmodal] = useState(false)
+  const [GsignupErr, setGsignupErr] = useState(false);
   const addServiceClose = () => setOtpmodal(false);
+  const handleError = () => setGsignupErr(true)
 
   const passwordTypeChange = () => {
     if (!passwordVisible) {
@@ -208,9 +211,14 @@ const Signup = () => {
         <button onClick={signupHandler} className='w-[60%] h-20 mt-10 text-3xl font-semibold border-2 border-black rounded-3xl text-center'>Signup</button>
         {!validation.signupError.status && (
         <p className=" text-red-600">{validation.signupError.message}</p>
-      )}
+        )}
+        
         <p className='mt-5'>Already a member?<a className='text-blue-900 font-semibold cursor-pointer' onClick={loginHandle}>Login</a></p>
         {/* <button className='w-[60%] h-20 mt-10 flex flex-row items-center pl-3 text-2xl font-medium border-2 border-black rounded-3xl text-center'><span className='w-[20%] h-20 flex items-center justify-center'><FcGoogle/></span>Login with google</button> */}
+        <SignupWithGoogle onError={handleError} />
+        {GsignupErr == true &&(
+        <p className=" text-red-600 mt-4">Signup failed! Try again</p>
+        )}
     </div>
     <div className='hidden md:flex items-center flex-col md:col-span-3 lg:col-span-2'>
         <img src="../../public/login.gif" alt="LOGIN" className='w-[100%]' />

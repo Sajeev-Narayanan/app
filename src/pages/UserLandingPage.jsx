@@ -5,7 +5,7 @@ import ServiceCard from '../components/ServiceCard'
 import Footer from '../components/Footer'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { userData } from '../features/userGoogleAuthSlice'
+// import { userData } from '../features/userGoogleAuthSlice'
 
 
 

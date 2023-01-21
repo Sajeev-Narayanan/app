@@ -2,32 +2,66 @@ import jwtDecode from 'jwt-decode';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { userData, userGoogleLoginChange } from '../features/userGoogleAuthSlice';
+import axios from '../config/axios'
+import { userAuthChange } from '../features/userAuthSlice';
 
 
 const LoginWithGoogle = () => {
-    const [user, setUser] = useState("");
+    // const [user, setUser] = useState("");
     const dispatch = useDispatch()
     const navigate =  useNavigate()
 
-    const handleCallBackResponse = (response) => { 
+    const handleCallBackResponse = async(response) => { 
         // console.log("Encoded JWT ID Token" + response.credential);
         const userObject = jwtDecode(response.credential);
         
-        setUser(userObject.email)
+        // setUser(userObject.email)
+
+        const data = { email: userObject.email};
+    try {
+      const response = await axios.post("/googleLogin", data);
+      console.log("it is working ", response);
+      
+      
+      
+      if (response.status === 201) {
+        const { accessToken, refreshToken, user } = response.data
+        
+        const disp = dispatch(userAuthChange({ accessToken, refreshToken, user }))
+        if (disp) {
+          
+          navigate('/')
+        }
+        setValidation((prevState) => ({
+          ...prevState,
+          signupError: {
+            value: true,
+            message: "",
+          },
+        }));
+        return true;
+
+      } else {
+        setValidation((prevState) => ({
+          ...prevState,
+          signupError: {
+            value: false,
+            message: "Something wrong happened",
+          },
+        }));
+        return false;
+      }
+       
+      
+    } catch (error) {
+      console.log(error);
+      // setError(true);
+    }
         
 
     }
         
-    console.log(user)
-    if (user != "" || user == null) {
-    
-        const disp = dispatch(userGoogleLoginChange({ user }))
-        // console.log(disp);
-        if (disp) {
-            navigate('/')
-        }
-    }
+
         
 
 

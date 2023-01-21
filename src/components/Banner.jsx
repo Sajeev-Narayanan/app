@@ -6,7 +6,7 @@ const Banner = (props) => {
   
   return (
     
-    <div className={`${props.type=='admin' && "lg:h-screen md:h-screen h-screen"} w-[100%] h-[500px] md:h-[727px] lg:h-[927px] bg-cover`} style={{ backgroundImage: `url(${image})` }}>
+    <div className={`${props.type=='admin' && "lg:h-[1007px] md:h-[1007px] h-[1007px]"} w-[100%] h-[500px] md:h-[727px] lg:h-[927px] bg-cover`} style={{ backgroundImage: `url(${image})` }}>
       <div className='grid grid-cols-2 h-[70%]'>
 
           <div className='w-full h-full text-white flex justify-center items-center font-Viaoda text-3xl md:text-6xl lg:text-8xl text-center'>From Venue Selection to Event Execution, We’re With You Every Step of the Way!</div>

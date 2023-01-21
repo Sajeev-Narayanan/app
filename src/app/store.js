@@ -2,7 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import authSlice from "../features/authSlice";
 import { persistStore, persistReducer } from 'redux-persist' // imports from redux-persist
 import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
-import userGoogleAuthSlice from "../features/userGoogleAuthSlice";
+// import userGoogleAuthSlice from "../features/userGoogleAuthSlice";
 import userAuthSlice from "../features/userAuthSlice";
 
 
@@ -14,7 +14,7 @@ const persistConfig = { // configuration object for redux-persist
 const reducer = combineReducers({
     
     auth: authSlice,
-    loginGoogle: userGoogleAuthSlice,
+    // loginGoogle: userGoogleAuthSlice,
     userLogin: userAuthSlice,
   });
 

@@ -3,13 +3,16 @@ import {AiOutlineClose,AiOutlineMenu} from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
 import { HashLink } from 'react-router-hash-link';
 import { useDispatch, useSelector } from 'react-redux'
-import { userData, userGoogleLoginChange } from '../features/userGoogleAuthSlice'
+// import { userData, userGoogleLoginChange } from '../features/userGoogleAuthSlice'
+import { userAuthChange, userData2 } from '../features/userAuthSlice';
 
 const Navebar = () => {
 
   const dispatch = useDispatch()
-  const user = useSelector(userData)
-  console.log(user);
+  // const user = useSelector(userData)
+  const user2 = useSelector(userData2)
+  console.log(user2);
+  
   
   const navigate = useNavigate()
 
@@ -26,7 +29,8 @@ const Navebar = () => {
   }
 
   const handleLogout = (e) => {
-    dispatch(userGoogleLoginChange({ user: "" }))
+    // dispatch(userGoogleLoginChange({ user: "" }))
+    dispatch(userAuthChange({user: "",accessToken: "",refreshToken: "" }))
     navigate("/login")
   }
   
@@ -39,7 +43,7 @@ const Navebar = () => {
         
         <li className='p-4 font-bold cursor-pointer'><HashLink smooth to="/#services">SERVICES</HashLink></li>
           <li onClick={profileHandle} className='p-4 font-bold cursor-pointer'>PROFILE</li>
-          {user&& <li onClick={(e)=>{handleLogout(e)}} className='p-4 font-bold cursor-pointer'>LOGOUT</li>}
+          { user2 && <li onClick={(e)=>{handleLogout(e)}} className='p-4 font-bold cursor-pointer'>LOGOUT</li>}
         </ul>
         <div className='block md:hidden' onClick={handleNav}>
           {!nav ? <AiOutlineClose size={30}/> : <AiOutlineMenu size={30}/>}
@@ -52,7 +56,7 @@ const Navebar = () => {
         
             <li  className='p-4 border-b border-gray-600 font-bold cursor-pointer'><HashLink smooth to="/#services">SERVICES</HashLink></li>
             <li onClick={profileHandle} className='p-4 border-b border-gray-600 font-bold cursor-pointer'>PROFILE</li>
-            {user&& <li onClick={(e)=>{handleLogout(e)}} className='p-4 font-bold cursor-pointer'>LOGOUT</li>}
+            { user2  && <li onClick={(e)=>{handleLogout(e)}} className='p-4 font-bold cursor-pointer'>LOGOUT</li>}
         </ul>
         </div>
         </div>

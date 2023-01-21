@@ -5,8 +5,10 @@ import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 
 import './App.css'
 import Layout from './components/Layout';
+import AdminRequireAuth from './features/AdminRequireAuth';
+import { currentToken } from './features/authSlice';
 import { userData2 } from './features/userAuthSlice';
-import { userData } from './features/userGoogleAuthSlice';
+// import { userData } from './features/userGoogleAuthSlice';
 import UserRequireAuth from './features/UserRequireAuth';
 import userRequireAuth from './features/UserRequireAuth';
 import Adminlanding from './pages/adminPages/Adminlanding';
@@ -32,17 +34,18 @@ import UserMessages from './pages/UserMessages';
 
 function App() {
   
-  const Guser = useSelector(userData)
+  // const Guser = useSelector(userData)
   const user = useSelector(userData2)
-  console.log(user+"################################");
+  const admin = useSelector(currentToken)
+ 
 
 
   return (
     
     <Routes>
       <Route path='/' element={<Layout/>}>
-        <Route path="login"  element={Guser ? <Navigate to="/"/> : <Login />} />
-        <Route path="signup" element={Guser? <Navigate to="/"/> :<Signup />} />
+        <Route path="login"  element={user != "" ? <Navigate to="/"/>: <Login />} />
+        <Route path="signup" element={user != "" ? <Navigate to="/"/>: <Signup />} />
         <Route element = {<UserRequireAuth/>}>
         <Route index element={<UserLandingPage />} />
         <Route path="providers" element={<Providers />} />
@@ -51,9 +54,8 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="messages" element={<UserMessages />} />
         </Route>
-        </Route>
         
-        
+          
         <Route path="providerlogin" element={<ProviderLogin />} />
         <Route path="providersignup" element={<ProviderSignup />} />
         <Route path="providerprofile" element={<ProviderProfile />} />
@@ -62,12 +64,15 @@ function App() {
         <Route path="providerchat" element={<ProviderChat />} />
         
 
-        <Route path="adminlogin" element={<AdminLogin />} />
+        <Route path="adminlogin" element={admin != "" ? <Navigate to="/adminlanding"/> :<AdminLogin />} />
+        <Route element={<AdminRequireAuth />}>
         <Route path="adminlanding" element={<Adminlanding />} />
         <Route path="usermanagement" element={<UserManagement />} />
         <Route path="requests" element={<Requests />} />
         <Route path="eventmanagers" element={<EventManagers/>} />
+        </Route>
 
+        </Route>
       </Routes>
       
   )
