@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import Sidebar from '../../components/adminComponents/Sidebar'
-import Banner from '../../components/Banner'
+import Banner2 from '../../components/Banner2'
 import { currentToken } from '../../features/authSlice'
 
 const Adminlanding = () => {
@@ -11,7 +11,7 @@ const Adminlanding = () => {
     <div className='flex'>
           <Sidebar />
       <div className=''>
-        <Banner type='admin'/>
+        <Banner2 type="admin"/>
           </div>
     </div>
   )

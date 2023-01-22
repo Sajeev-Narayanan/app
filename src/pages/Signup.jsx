@@ -137,7 +137,8 @@ const Signup = () => {
   }
   
 
-  const signupHandler = async() => { 
+  const signupHandler = async () => { 
+    
     const data = { email: userData.email,phone:userData.phone, password: userData.password, };
     try {
       const response = await axios.post("/signup", data);
@@ -214,7 +215,6 @@ const Signup = () => {
         )}
         
         <p className='mt-5'>Already a member?<a className='text-blue-900 font-semibold cursor-pointer' onClick={loginHandle}>Login</a></p>
-        {/* <button className='w-[60%] h-20 mt-10 flex flex-row items-center pl-3 text-2xl font-medium border-2 border-black rounded-3xl text-center'><span className='w-[20%] h-20 flex items-center justify-center'><FcGoogle/></span>Login with google</button> */}
         <SignupWithGoogle onError={handleError} />
         {GsignupErr == true &&(
         <p className=" text-red-600 mt-4">Signup failed! Try again</p>

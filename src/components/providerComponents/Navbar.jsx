@@ -1,14 +1,18 @@
 import React,{useState} from 'react'
 import {AiOutlineClose,AiOutlineMenu} from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { managersAuthChange, managersData } from '../../features/managersAuthSlice'
 
 
 const Navebar = () => {
+  const dispatch = useDispatch()
+  const managers = useSelector(managersData)
   
   const navigate = useNavigate()
 
   const homeHandle = () => {
-    navigate('/')
+    navigate('/managersLanding')
   }
   const profileHandle = () => {
     navigate('/profile')
@@ -17,6 +21,11 @@ const Navebar = () => {
   const [nav, setNav] = useState("nav")  
   const handleNav = () => {
     setNav(!nav)
+  }
+
+  const handleLogout = (e) => {
+    dispatch(managersAuthChange({managers: "",accessToken: "",refreshToken: "" }))
+    navigate("/providerlogin")
   }
   
   return (
@@ -29,7 +38,7 @@ const Navebar = () => {
         
           <li onClick={profileHandle} className='p-4 font-bold cursor-pointer'>PROFILE</li>
           <li className='p-4 font-bold cursor-pointer'>MESSAGES</li>
-          <li className='p-4 font-bold cursor-pointer'>LOGOUT</li>
+          { managers && <li onClick={(e)=>{handleLogout(e)}} className='p-4 font-bold cursor-pointer'>LOGOUT</li>}
         </ul>
         <div className='block md:hidden' onClick={handleNav}>
           {!nav ? <AiOutlineClose size={30}/> : <AiOutlineMenu size={30}/>}
@@ -42,7 +51,7 @@ const Navebar = () => {
         
             
             <li className='p-4 border-b border-gray-600 font-bold cursor-pointer'>PROFILE</li>
-            <li className='p-4 border-b border-gray-600 font-bold cursor-pointer'>LOGOUT</li>
+            { managers && <li onClick={(e)=>{handleLogout(e)}} className='p-4 font-bold cursor-pointer'>LOGOUT</li>}
         </ul>
         </div>
         </div>

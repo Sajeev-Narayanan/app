@@ -1,12 +1,26 @@
 import React, { useState } from 'react'
 import { FcGoogle} from 'react-icons/fc'
+import { MdBackspace } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 import OtpModal from '../../components/providerComponents/OtpModal'
+import { FiEye, FiEyeOff } from "react-icons/fi";
 const ProviderSignup = () => {
 
 
   const [Optmodal, setOtpmodal] = useState(false)
   const addServiceClose = () => setOtpmodal(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [passwordType, setPasswordType] = useState("password");
+
+  const passwordTypeChange = () => {
+    if (!passwordVisible) {
+      setPasswordVisible(true);
+      setPasswordType("text");
+    } else {
+      setPasswordVisible(false);
+      setPasswordType("password");
+    }
+  };
   // onClick={()=>setOtpmodal(true)}
 
   const navigate = useNavigate()
@@ -14,12 +28,11 @@ const ProviderSignup = () => {
   navigate('/providerlogin')
   }
   
-
+  const [services, setServices] = useState([]);
+  const [place, setPlace] = useState([]);
   const [providerData, setProviderData] = useState({
     companyName: "",
     description: "",
-    services: "",
-    place: "",
     phone: "",
     email: "",
     password: "",
@@ -70,6 +83,23 @@ const ProviderSignup = () => {
       [e.target.name]: e.target.value,
     }));
   };
+  const selectService = (e) => {
+    services.includes(e.target.value) ? setServices((prevState) =>[...prevState]) : setServices((prevState) =>[...prevState,e.target.value])
+  }
+
+  const backService = () => {
+    setServices(services.slice(0, -1))
+    servicesCheck()
+  }
+
+  const selectPlace = (e) => {
+    place.includes(e.target.value) ? setPlace((prevState) =>[...prevState]) : setPlace((prevState) =>[...prevState,e.target.value])
+  }
+
+  const backPlace = () => {
+    setPlace(place.slice(0, -1))
+    placeCheck()
+  }
 
 
 
@@ -124,7 +154,7 @@ const ProviderSignup = () => {
 
   const servicesCheck = () => {
     
-    if (providerData.services == "") {
+    if (services == "") {
       setValidation((prevState) => ({
         ...prevState,
         services: {
@@ -150,12 +180,12 @@ const ProviderSignup = () => {
 
   const placeCheck = () => {
     
-    if (providerData.place == "") {
+    if (place == "") {
       setValidation((prevState) => ({
         ...prevState,
         place: {
           value: false,
-          message: "select one category",
+          message: "select one place",
         },
       }));
       return false;
@@ -282,6 +312,8 @@ const ProviderSignup = () => {
           body: JSON.stringify({
             certificateUrl,
             providerData,
+            services,
+            place
             
           }),   
         })
@@ -350,28 +382,44 @@ const ProviderSignup = () => {
           className='w-[90%] max-h-40 mt-10 text-3xl border-2 border-black rounded-3xl text-center show-scrollbar'></textarea>
         {!validation.description.status && (
         <p className=" text-red-600">{validation.description.message}</p>
-      )}
+        )}
+        <div className='w-[90%] mt-10 text-3xl border-2 border-black rounded-3xl text-center flex flex-col items-center justify-center break-words'>
+          <div className=' w-[90%] break-words'>{services.join(' , ')}</div>
+          <MdBackspace onClick={backService} className='self-end mr-2'/>
         <select
-          name="services"
-          value={providerData.services}
-          onChange={valueSetting}
+            name="services"
+            value=""
+          onChange={selectService}
           onBlur={servicesCheck}
-          className='w-[90%] h-20 mt-10 text-3xl border-2 border-black rounded-3xl text-center'>
-                              <option value="">-- Choose a category --</option>
-                              <option value="Wedding planning">Wedding planning</option>
-                              <option value="Travels">Travels</option>
-                              <option value="Photography">Photography</option>
-        </select>
+          className='h-12 bottom-0 border-none  w-full text-center rounded-3xl'>
+            <option value="#">--Select Services--</option>
+            <option value="Wedding planning">Wedding planning</option>
+            <option value="Personal events">Personal events</option>
+            <option value="Commercial events">Commercial events</option>
+            <option value="Birthday party">Birthday party</option>
+            <option value="Live music & orchestra" placeholder='fj'>Live music & orchestra</option>
+            <option value="Entertainment shows">Entertainment shows</option>
+            <option value="Bridal makeup">Bridal makeup</option>
+            <option value="Photography">Photography</option>
+            <option value="Travels">Travels</option>
+            <option value="Catering services">Catering services</option>
+            <option value="Decoration">Decoration</option>
+            <option value="Security">Security</option>
+          </select>
+          </div>
         {!validation.services.status && (
         <p className=" text-red-600">{validation.services.message}</p>
-      )}
+        )}
+        <div className='w-[90%] mt-10 text-3xl border-2 border-black rounded-3xl text-center flex flex-col items-center justify-center break-words'>
+        <div className=' w-[90%] break-words'>{place.join(' , ')}</div>
+          <MdBackspace onClick={backPlace} className='self-end mr-2'/>
         <select
           name="place"
-          value={providerData.place}
-          onChange={valueSetting}
+          value=""
+          onChange={selectPlace}
           onBlur={placeCheck}
-          className='w-[90%] h-20 mt-10 text-3xl border-2 border-black rounded-3xl text-center'>
-                              <option value="#">-- Choose your place --</option>
+          className='h-12 bottom-0 border-none  w-full text-center rounded-3xl'>
+                              <option value="#">-- Select Places --</option>
                               <option value="Alappuzha" >Alappuzha</option>
                               <option value="Ernakulam">Ernakulam</option>
                               <option value="Idukki">Idukki</option>
@@ -386,7 +434,8 @@ const ProviderSignup = () => {
                               <option value="Thiruvananthapuram">Thiruvananthapuram</option>
                               <option value="Thrissur">Thrissur</option>
                               <option value="Wayanad">Wayanad</option>
-        </select>
+          </select>
+          </div>
         {!validation.place.status && (
         <p className=" text-red-600">{validation.place.message}</p>
       )}
@@ -415,7 +464,7 @@ const ProviderSignup = () => {
         <p className=" text-red-600">{validation.email.message}</p>
       )}
         <input
-          type="password"
+          type={passwordType}
           name='password'
           value={providerData.password}
           onChange={valueSetting}
@@ -423,6 +472,15 @@ const ProviderSignup = () => {
           placeholder='Password'
           className='w-[90%] h-20 mt-10 text-3xl border-2 border-black rounded-3xl text-center'
         />
+        <p className="relative w-full ">
+          <i className="absolute right-10 bottom-6 bg-white z-10 pl-2" onClick={passwordTypeChange}>
+            {passwordVisible ? (
+              <FiEye size={38} opacity={0.6} />
+            ) : (
+              <FiEyeOff size={38} opacity={0.6} />
+            )}
+          </i>
+        </p>
         {!validation.password.status && (
         <p className=" text-red-600">{validation.password.message}</p>
       )}

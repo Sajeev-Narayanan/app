@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom'
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import axios from '../../config/axios'
+import { managersAuthChange } from '../../features/managersAuthSlice';
 
 
 const ProviderLogin = () => {
@@ -96,6 +97,61 @@ const ProviderLogin = () => {
       return true;
     }
   };
+
+
+  const loginHandler = async() => {
+    const data = { email: userData.email, password: userData.password, };
+    try {
+      const response = await axios.post("/provider/managerLogin", data);
+      console.log("it is working ", response);
+      
+      
+      
+      if (response.status === 201) {
+        const { accessToken, refreshToken, managers } = response.data
+        
+        const disp = dispatch(managersAuthChange({ accessToken, refreshToken, managers }))
+        if (disp) {
+          
+          navigate('/managersLanding')
+        }
+        setValidation((prevState) => ({
+          ...prevState,
+          signupError: {
+            value: true,
+            message: "",
+          },
+        }));
+        return true;
+
+      } else {
+        setValidation((prevState) => ({
+          ...prevState,
+          signupError: {
+            value: false,
+            message: "Something wrong happened",
+          },
+        }));
+        return false;
+      }
+       
+      
+    } catch (error) {
+      console.log(error + "&&&&&&&&&&&&&&&&&&&&");
+      setValidation((prevState) => ({
+        ...prevState,
+        signupError: {
+          value: false,
+          message: "Something wrong happened",
+        },
+      }));
+      return false;
+      // setError(true);
+    }
+  }
+
+
+
   const signupHandle = () => {
     navigate('/providersignup')
   }
@@ -118,7 +174,7 @@ const ProviderLogin = () => {
         {!validation.password.status && (
         <p className=" text-red-600">{validation.password.message}</p>
       )}
-        <button className='w-[60%] h-20 mt-10 text-3xl font-semibold border-2 border-black rounded-3xl text-center  hover:bg-black hover:text-white'>Login</button>
+        <button onClick={loginHandler} className='w-[60%] h-20 mt-10 text-3xl font-semibold border-2 border-black rounded-3xl text-center  hover:bg-black hover:text-white'>Login</button>
         {!validation.signupError.status && (
         <p className=" text-red-600">{validation.signupError.message}</p>
       )}

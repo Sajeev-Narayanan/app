@@ -52,7 +52,7 @@ const MoreRequest = ({ visible, onClose, data }) => {
   return (
       <div id='container' onClick={handleOnClose} className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center'>
           
-              <div className='bg-white w-[1000px] h-[700px] flex flex-col rounded-3xl m-2'>
+              <div className='bg-white w-[1000px] p-5 flex flex-col rounded-3xl m-2'>
                   <div className='flex flex-row-reverse text-4xl p-4 border-b-2 border-black'>
                       <button onClick={onClose} ><AiFillCloseCircle/></button>
               </div>
@@ -66,13 +66,13 @@ const MoreRequest = ({ visible, onClose, data }) => {
                   <div className='col-span-3 flex flex-col pt-7'>
                       <h1 className='text-center text-3xl font-semibold uppercase'>{ data[0].companyname}</h1>
                       <p className='mt-10 shadow-2xl pl-4 h-60 mr-4 overflow-y-scroll no-scrollbar text-lg'>{ data[0].description}</p>
-                      <div className='mt-10 flex flex-row'>
-                          <h2 className='text-xl font-medium uppercase'>category  :</h2>
-                          <h2 className='ml-2 text-xl'>{data[0].category}</h2>
+                      <div className='mt-10 grid grid-cols-5'>
+                          <h2 className='text-xl font-medium uppercase col-span-1'>category  :</h2>
+                          <h2 className='ml-2 text-xl col-span-4'>{data[0].category.join(" , ")}</h2>
                       </div> 
-                      <div className='mt-10 flex flex-row'>
-                          <h2 className='text-xl font-medium uppercase'>location  :</h2>
-                          <h2 className='ml-2 text-xl'>{data[0].place}</h2>
+                      <div className='mt-10 grid grid-cols-5'>
+                          <h2 className='text-xl font-medium uppercase col-span-1'>location  :</h2>
+                          <h2 className='ml-2 text-xl col-span-4'>{data[0].place.join(" , ")}</h2>
                       </div>
                       <div className='mt-10 flex flex-row justify-end gap-4 mr-8'>
                           <button onClick={() => { approveHandler() }} className='py-3 px-10 rounded-full bg-green-500 hover:bg-green-600 text-xl font-medium uppercase'>approve</button>
