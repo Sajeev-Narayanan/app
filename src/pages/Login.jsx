@@ -106,7 +106,7 @@ const Login = () => {
       const response = await axios.post("/login", data);
       console.log("it is working ", response);
       
-      
+      console.log(response.status);
       
       if (response.status === 201) {
         const { accessToken, refreshToken, user } = response.data
@@ -125,7 +125,7 @@ const Login = () => {
         }));
         return true;
 
-      } else {
+      } else if (response.status === 403) {
         setValidation((prevState) => ({
           ...prevState,
           signupError: {
@@ -138,7 +138,17 @@ const Login = () => {
        
       
     } catch (error) {
-      console.log(error);
+      
+      
+        setValidation((prevState) => ({
+          ...prevState,
+          signupError: {
+            value: false,
+            message: "Incorrect password or email"
+          },
+        }));
+        return false;
+     
       // setError(true);
     }
   }
@@ -172,7 +182,8 @@ const Login = () => {
         {!validation.signupError.status && (
         <p className=" text-red-600">{validation.signupError.message}</p>
       )}
-              <p className='mt-5'>Register using <a className='text-blue-900 font-semibold cursor-pointer' onClick={signupHandle}>Signup</a></p>
+        <p className='mt-5'>Register using <a className='text-blue-900 font-semibold cursor-pointer' onClick={signupHandle}>Signup</a></p>
+        <p className=''>Forgot password?</p>
         {/* <button className='w-[60%] h-20 mt-10 flex flex-row items-center pl-3 text-2xl font-medium border-2 border-black rounded-3xl text-center  hover:bg-black hover:text-white'><span className='w-[20%] h-20 flex items-center justify-center'><FcGoogle /></span>Login with google</button> */}
         <LoginWithGoogle/>
           </div>

@@ -34,7 +34,7 @@ const EventManagers = () => {
           <Sidebar type="event" />
           <div className='w-full h-screen'>
               <div className='max-w-[1200px] mx-auto bg-white mt-20 rounded-3xl p-8'>
-          <EventManagersTable data={data} load={load} change={ setload} />
+          <EventManagersTable data={data} load={load} change={setload} />
                  
               </div>
           </div>

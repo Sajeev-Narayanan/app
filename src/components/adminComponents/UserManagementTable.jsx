@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react'
 import DataTable from 'react-data-table-component';
 import styled from 'styled-components';
+import axios from '../../config/axios'
 
 const TextField = styled.input`
 	height: 50px;
@@ -51,8 +52,47 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
     	</>
     );
 
-const UserManagementTable = ({data}) => {
-// console.log(props.value)
+const UserManagementTable = ({ data, change, load }) => {
+	
+
+	const blockHandler = (id) => {
+		
+	try {
+		const value = { id:id };
+		axios.post("/admin/blockUser", value).then((response) => {
+		  if (response.status === 200) {
+			  load == false ? change(true) : change(false);
+			  
+		  } else {
+			alert("SOMETHING WRONG!!!!!!!!!!!!!")
+		  }
+		})
+	  } catch (error) {
+		
+		alert("SOMETHING WRONG!!!!!!!!!!!!!")
+	}
+}
+
+const unblockHandler = (id) => {
+	try {
+		const value = { id:id };
+
+		axios.post("/admin/unblockUser",value).then((response) => {
+		  
+		  if (response.status === 200) {
+			  console.log(response);
+			  
+			  load == false ? change(true) : change(false);
+		  } else {
+			alert("SOMETHING WRONG!!!!!!!!!!!!!")
+		  }
+		})
+	  } catch (error) {
+		console.log(error);
+		alert("SOMETHING WRONG!!!!!!!!!!!!!")
+	  }
+}
+
     const columns = [
         {
             name: 'Email',
@@ -64,7 +104,7 @@ const UserManagementTable = ({data}) => {
 		},
 		{
             name: '',
-			cell: row => (<button type="" className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full' onClick={() => alert(row.email)}>Block</button>),
+			cell: row => (row.approved === true ?< button type="" className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full' onClick={() => blockHandler(row._id)}> block</button >:< button type="" className='bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full' onClick={() => unblockHandler(row._id)}> unblock</button >),
         },
     ];
     

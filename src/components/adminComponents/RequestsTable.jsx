@@ -56,13 +56,17 @@ const RequestsTable = ({ more, data, select }) => {
 
     const columns = [
         {
-            name: 'Email',
-            selector: row => row.email,
-        },
-        {
             name: 'Company Name',
             selector: row => row.companyname,
 		},
+		{
+            name: 'Email',
+            selector: row => row.email,
+		}, 
+		{
+            name: 'Phone',
+            selector: row => row.mobile,
+        },
 		{
             name: '',
 			cell: row => (<button type="" className='bg-blue-500 hover:bg-blue -700 text-white font-bold py-2 px-4 rounded-full' onClick={() => { select(row._id);;more(true); }}>More</button>),

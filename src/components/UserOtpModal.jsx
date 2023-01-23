@@ -84,7 +84,7 @@ const UserOtpModal = ({ visible, onClose, phone }) => {
               </div>
               <div className='h-full w-full flex items-center justify-center flex-col'>
           <h1 className='text-3xl font-medium mb-8'>Enter OTP</h1>
-          <p>OTP was send to { phone}</p>
+          <p>OTP was send to +91 { phone}</p>
                   <OtpInput
                        value={otp}
                        onChange={handleChange}

@@ -1,3 +1,4 @@
+import { useToast } from '@chakra-ui/toast';
 import jwtDecode from 'jwt-decode';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,7 +10,15 @@ import { userAuthChange } from '../features/userAuthSlice';
 const LoginWithGoogle = () => {
     // const [user, setUser] = useState("");
     const dispatch = useDispatch()
-    const navigate =  useNavigate()
+  const navigate = useNavigate()
+  const toast = useToast({
+    position: 'top',
+    title: 'Login with Google failed',
+    containerStyle: {
+      width: '500px',
+      maxWidth: '100%',
+    },
+  })
 
     const handleCallBackResponse = async(response) => { 
         // console.log("Encoded JWT ID Token" + response.credential);
@@ -46,7 +55,7 @@ const LoginWithGoogle = () => {
           ...prevState,
           signupError: {
             value: false,
-            message: "Something wrong happened",
+            message: "Login failed",
           },
         }));
         return false;
@@ -54,7 +63,20 @@ const LoginWithGoogle = () => {
        
       
     } catch (error) {
-      console.log(error);
+      console.log("$$$$$$$$$$$$$$")
+      toast({
+        variant: 'left-accent',
+        status: 'error',
+        isClosable:true
+      })
+      // setValidation((prevState) => ({
+      //   ...prevState,
+      //   signupError: {
+      //     value: false,
+      //     message: "Login failed",
+      //   },
+      // }));
+      // return false;
       // setError(true);
     }
         

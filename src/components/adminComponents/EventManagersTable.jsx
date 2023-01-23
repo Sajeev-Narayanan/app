@@ -61,7 +61,7 @@ const EventManagersTable = ({ data ,change,load }) => {
             axios.post("/admin/blockManagers",value).then((response) => {
               
               if (response.status === 200) {
-				  console.log(response);
+				  
 				  load == false ? change(true) : change(false);
                   
               } else {
@@ -69,7 +69,7 @@ const EventManagersTable = ({ data ,change,load }) => {
               }
             })
           } catch (error) {
-            console.log(error);
+           
             alert("SOMETHING WRONG!!!!!!!!!!!!!")
           }
 	}
@@ -96,14 +96,18 @@ const EventManagersTable = ({ data ,change,load }) => {
 	
 
 
-    const columns = [
+	const columns = [
+	    {
+            name: 'Company Name',
+            selector: row => row.companyname,
+		},
         {
             name: 'Email',
             selector: row => row.email,
         },
         {
-            name: 'Company Name',
-            selector: row => row.phone,
+            name: 'Phome',
+            selector: row => row.mobile,
 		},
 		{
             name: '',
