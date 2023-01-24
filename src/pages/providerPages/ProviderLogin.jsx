@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import axios from '../../config/axios'
 import { managersAuthChange } from '../../features/managersAuthSlice';
@@ -178,7 +178,9 @@ const ProviderLogin = () => {
         {!validation.signupError.status && (
         <p className=" text-red-600">{validation.signupError.message}</p>
       )}
-              <p className='mt-5'>Register using <a className='text-blue-900 font-semibold cursor-pointer' onClick={signupHandle}>Signup</a></p>
+        <p className='mt-5'>Register using <a className='text-blue-900 font-semibold cursor-pointer' onClick={signupHandle}>Signup</a></p>
+        
+        <Link to={'/managersForgotPassword'} className='mt-3 underline font-semibold text-gray-600'>Forgot password?</Link>
               {/* <button className='w-[60%] h-20 mt-10 flex flex-row items-center pl-3 text-2xl font-medium border-2 border-black rounded-3xl text-center'><span className='w-[20%] h-20 flex items-center justify-center'><FcGoogle/></span>Login with google</button> */}
           </div>
           <div className='hidden md:flex items-center flex-col md:col-span-3 lg:col-span-2'>

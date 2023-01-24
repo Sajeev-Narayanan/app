@@ -18,10 +18,14 @@ import AdminLogin from './pages/adminPages/AdminLogin';
 import EventManagers from './pages/adminPages/EventManagers';
 import Requests from './pages/adminPages/Requests';
 import UserManagement from './pages/adminPages/UserManagement';
+import ChangePassword from './pages/ChangePassword';
 import Chat from './pages/Chat';
+import Forgotpassword from './pages/Forgotpassword';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
 import EditProfile from './pages/providerPages/EditProfile';
+import ManagerChangePassword from './pages/providerPages/ManagerChangePassword';
+import ManagersForgotPassword from './pages/providerPages/ManagersForgotPassword';
 import ManagersLanding from './pages/providerPages/ManagersLanding';
 import Messages from './pages/providerPages/Messages';
 import ProviderChat from './pages/providerPages/ProviderChat';
@@ -55,7 +59,9 @@ function App() {
 
 
         <Route path="login"  element={user != "" ? <Navigate to="/userlanding"/>: <Login />} />
-        <Route path="signup" element={user != "" ? <Navigate to="/userlanding"/>: <Signup />} />
+        <Route path="signup" element={user != "" ? <Navigate to="/userlanding" /> : <Signup />} />
+        <Route path="forgotpassword" element={user != "" ? <Navigate to="/userlanding" /> : <Forgotpassword />} />
+        <Route path="changePassword/:userId/:token" element={user != "" ? <Navigate to="/userlanding"/>: <ChangePassword />} />
         <Route element = {<UserRequireAuth/>}>
         <Route path='userlanding' element={<UserLandingPage />} />
         <Route path="providers" element={<Providers />} />
@@ -66,7 +72,9 @@ function App() {
         </Route>
         
         <Route path="providerlogin" element={manager != "" ? <Navigate to="/managersLanding"/>:<ProviderLogin />} />
-        <Route path="providersignup" element={manager != "" ? <Navigate to="/managersLanding"/>:<ProviderSignup />} />
+        <Route path="providersignup" element={manager != "" ? <Navigate to="/managersLanding" /> : <ProviderSignup />} />
+        <Route path="managersForgotPassword" element={manager != "" ? <Navigate to="/managersLanding"/>:<ManagersForgotPassword />} />
+        <Route path="managerChangePassword/:userId/:token" element={manager != "" ? <Navigate to="/managersLanding"/>:<ManagerChangePassword />} />
         <Route element={<ManagersRequireAuth />}>
         <Route path='managersLanding' element={ <ManagersLanding />} />
         <Route path="providerprofile" element={<ProviderProfile />} />

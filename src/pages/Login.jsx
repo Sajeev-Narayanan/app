@@ -6,6 +6,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import axios from '../config/axios'
 import { useDispatch, useSelector } from 'react-redux';
 import { userAuthChange } from '../features/userAuthSlice';
+import { Link } from 'react-router-dom';
 
 
 const Login = () => {
@@ -183,7 +184,7 @@ const Login = () => {
         <p className=" text-red-600">{validation.signupError.message}</p>
       )}
         <p className='mt-5'>Register using <a className='text-blue-900 font-semibold cursor-pointer' onClick={signupHandle}>Signup</a></p>
-        <p className=''>Forgot password?</p>
+        <Link to={'/forgotpassword'} className='mt-3 underline font-semibold text-gray-600'>Forgot password?</Link>
         {/* <button className='w-[60%] h-20 mt-10 flex flex-row items-center pl-3 text-2xl font-medium border-2 border-black rounded-3xl text-center  hover:bg-black hover:text-white'><span className='w-[20%] h-20 flex items-center justify-center'><FcGoogle /></span>Login with google</button> */}
         <LoginWithGoogle/>
           </div>
