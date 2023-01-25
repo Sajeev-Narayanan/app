@@ -2,12 +2,24 @@ import React,{useState} from 'react'
 import {AiOutlineClose,AiOutlineMenu} from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { managersAuthChange, managersData } from '../../features/managersAuthSlice'
+import { managersAuthChange, managersData, managersRefreshToken } from '../../features/managersAuthSlice'
+import axios from '../../config/axios'
+import { useToast } from '@chakra-ui/toast';
 
 
 const Navebar = () => {
   const dispatch = useDispatch()
   const managers = useSelector(managersData)
+  const token = useSelector(managersRefreshToken)
+
+  const toast = useToast({
+    position: 'top',
+    title: 'Logout failed',
+    containerStyle: {
+      width: '500px',
+      maxWidth: '100%',
+    },
+  })
   
   const navigate = useNavigate()
 
@@ -15,7 +27,7 @@ const Navebar = () => {
     navigate('/managersLanding')
   }
   const profileHandle = () => {
-    navigate('/profile')
+    navigate('/providerprofile')
   }
 
   const [nav, setNav] = useState("nav")  
@@ -23,9 +35,18 @@ const Navebar = () => {
     setNav(!nav)
   }
 
-  const handleLogout = (e) => {
-    dispatch(managersAuthChange({managers: "",accessToken: "",refreshToken: "" }))
-    navigate("/providerlogin")
+  const handleLogout = async(e) => {
+    const response = await axios.post('/provider/managersLogout', { email: managers, token: token })
+    if (response.status === 204) {
+      dispatch(managersAuthChange({ managers: "", accessToken: "", refreshToken: "" }))
+      navigate("/providerlogin")
+    }else {
+      toast({
+        variant: 'left-accent',
+        status: 'error',
+        isClosable:true
+      })
+    }
   }
   
   return (

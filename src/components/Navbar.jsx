@@ -3,14 +3,28 @@ import {AiOutlineClose,AiOutlineMenu} from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
 import { HashLink } from 'react-router-hash-link';
 import { useDispatch, useSelector } from 'react-redux'
-import { userAuthChange, userData2 } from '../features/userAuthSlice';
+import { refreshToken2, userAuthChange, userData2 } from '../features/userAuthSlice';
+import axios from '../config/axios'
+import { useToast } from '@chakra-ui/toast';
 
 const Navebar = () => {
 
   const dispatch = useDispatch()
   // const user = useSelector(userData)
   const user2 = useSelector(userData2)
+  const token = useSelector(refreshToken2)
+  console.log(token);
   console.log(user2);
+
+
+  const toast = useToast({
+    position: 'top',
+    title: 'Logout failed',
+    containerStyle: {
+      width: '500px',
+      maxWidth: '100%',
+    },
+  })
   
   
   const navigate = useNavigate()
@@ -27,10 +41,20 @@ const Navebar = () => {
     setNav(!nav)
   }
 
-  const handleLogout = (e) => {
+  const handleLogout = async (e) => {
     // dispatch(userGoogleLoginChange({ user: "" }))
-    dispatch(userAuthChange({user: "",accessToken: "",refreshToken: "" }))
-    navigate("/login")
+    const response = await axios.post('/logout', { email: user2 , token: token})
+    if (response.status === 204) {
+      
+      dispatch(userAuthChange({user: "",accessToken: "",refreshToken: "" }))
+      navigate("/login")
+    } else {
+      toast({
+        variant: 'left-accent',
+        status: 'error',
+        isClosable:true
+      })
+    }
   }
   
   return (

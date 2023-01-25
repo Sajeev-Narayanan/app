@@ -24,4 +24,5 @@ const userAuthSlice = createSlice({
 
 export default userAuthSlice.reducer
 export const { userAuthChange } = userAuthSlice.actions
-export const userData2 =(state) =>state.userLogin.user
+export const userData2 = (state) => state.userLogin.user
+export const refreshToken2 =(state) =>state.userLogin.refreshToken

@@ -24,4 +24,5 @@ const managersAuthSlice = createSlice({
 
 export default managersAuthSlice.reducer
 export const { managersAuthChange } = managersAuthSlice.actions
-export const managersData =(state) =>state.managersLogin.managers
+export const managersData = (state) => state.managersLogin.managers
+export const managersRefreshToken =(state) =>state.managersLogin.refreshToken
