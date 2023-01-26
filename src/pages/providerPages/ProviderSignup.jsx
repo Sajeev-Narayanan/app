@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { FcGoogle} from 'react-icons/fc'
 import { MdBackspace } from 'react-icons/md'
 import { useNavigate } from 'react-router-dom'
 import OtpModal from '../../components/providerComponents/OtpModal'
@@ -84,7 +83,9 @@ const ProviderSignup = () => {
     }));
   };
   const selectService = (e) => {
-    services.includes(e.target.value) ? setServices((prevState) =>[...prevState]) : setServices((prevState) =>[...prevState,e.target.value])
+    services.includes(e.target.value) ?
+      setServices((prevState) => [...prevState]) :
+      setServices((prevState) => [...prevState, e.target.value])
   }
 
   const backService = () => {
@@ -93,7 +94,9 @@ const ProviderSignup = () => {
   }
 
   const selectPlace = (e) => {
-    place.includes(e.target.value) ? setPlace((prevState) =>[...prevState]) : setPlace((prevState) =>[...prevState,e.target.value])
+    place.includes(e.target.value) ?
+      setPlace((prevState) => [...prevState]) :
+      setPlace((prevState) => [...prevState, e.target.value])
   }
 
   const backPlace = () => {
@@ -499,7 +502,6 @@ const ProviderSignup = () => {
         <p className=" text-red-600">{validation.signuoError.message}</p>
       )}
         <p className='mt-5'>Already a member?<a className='text-blue-900 font-semibold cursor-pointer' onClick={loginHandle}>Login</a></p>
-        <button className='w-[60%] h-20 mt-10 flex flex-row items-center pl-3 text-2xl font-medium border-2 border-black rounded-3xl text-center'><span className='w-[20%] h-20 flex items-center justify-center'><FcGoogle/></span>Login with google</button>
     </div>
     <div className='hidden md:flex items-center flex-col md:col-span-3 lg:col-span-2'>
         <img src="login.gif" alt="LOGIN" className='w-[100%] top-1 sticky' />

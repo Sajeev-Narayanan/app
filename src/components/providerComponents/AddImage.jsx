@@ -1,7 +1,13 @@
+import { useToast } from '@chakra-ui/toast';
 import React, { useRef, useState } from 'react'
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { BsImages } from "react-icons/bs";
 import { FaTimes } from "react-icons/fa";
+import { useSelector } from 'react-redux';
+import axios from '../../config/axios'
+import { managersData } from '../../features/managersAuthSlice';
+import BeatLoader from "react-spinners/BeatLoader";
+import { Button } from '@chakra-ui/react';
 
 
 
@@ -9,9 +15,59 @@ const AddImage = ({ visible, onClose }) => {
 
 
   const [image, SetImage] = useState("");
+  const [error, setError] = useState(false);
+  const [load, setLoad] = useState(false);
   const imageInput = useRef(null);
+  const managers = useSelector(managersData)
+  const toast = useToast()
 
-  const imageHalndler=()=>{}
+  const imageHandler = () => {
+    setError(false)
+    if (image != "") {
+      setLoad(true)
+      const data = new FormData();
+      data.append("file", image);
+      data.append("upload_preset", "SparklingStories");
+      data.append("cloud_name", "djrzqc3nc");
+
+      fetch("https://api.cloudinary.com/v1_1/djrzqc3nc/image/upload", {
+        method: "post",
+        body: data,
+      }).then((res) => res.json())
+        .then(async (data) => {
+     
+          const imageUrl = data.url;
+
+          const response = await axios.post("/provider/addimage", { imageUrl, managers })
+          if (response.status === 201) {
+            toast({
+              position: "top",
+              variant: 'left-accent',
+              status: 'success',
+              isClosable: true,
+              title: 'Image added successfully',
+          
+            })
+            onClose()
+            SetImage("")
+            setLoad(false)
+          } else {
+            setError("select one")
+            toast({
+              position: "top",
+              variant: 'left-accent',
+              status: 'error',
+              isClosable: true,
+              title: 'Image adding failed',
+          
+            })
+          }
+        })
+      
+    } else {
+      setError(true)
+    }
+  }
 
   const resetShare = () => {
     SetImage(null);
@@ -30,7 +86,7 @@ const AddImage = ({ visible, onClose }) => {
                       <button onClick={onClose} ><AiFillCloseCircle/></button>
               </div>
               <div className='h-full w-full flex items-center justify-center flex-col'>
-                  <h1 className='text-3xl font-medium mb-8'>Add Image</h1>
+                  <h1 className='text-3xl font-semibold mb-8'>Add Image</h1>
                   
                   
                    <div className="w-[400px] h-[350px] flex  border-zinc-300 border-2 rounded-2xl items-center justify-center">
@@ -67,8 +123,11 @@ const AddImage = ({ visible, onClose }) => {
           />
 
           
-           
-            <button onClick={imageHalndler} className='bg-green-500 hover:bg-green-600 mb-7 rounded-3xl h-16 w-[60%] text-lg font-medium mt-6 p-4 uppercase'>save</button>
+          {error && <p className='text-red-500'>Select one image</p>}
+          {!load ?
+            <button onClick={imageHandler} className='bg-green-500 hover:bg-green-600 mb-7 rounded-3xl h-16 w-[60%] text-lg font-medium mt-6 p-4 uppercase'>save</button> :
+            <Button className=' rounded-3xl h-16 w-[60%] mb-7 text-2xl font-bold mt-6 p-4 uppercase' height={16} rounded={23} isLoading colorScheme='green' spinner={<BeatLoader size={16} color='white' />}>Click me</Button>
+          }
         
               </div>
               </div>

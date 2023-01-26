@@ -24,7 +24,7 @@ const OurServices = (props) => {
     try {
         const response = await axios.post('/provider/removeService', { data:props.text, managers })
         if (response.status === 201) {
-          props.isDelete(true)
+         props.delete==false? props.isDelete(true):props.isDelete(false)
         toast({
           position: "top",
           variant: 'left-accent',

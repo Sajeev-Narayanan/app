@@ -27,6 +27,7 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.6.1",
     "react-router-hash-link": "^2.4.3",
+    "react-spinners": "^0.13.8",
     "react18-input-otp": "^1.1.2",
     "redux-persist": "^6.0.0",
     "styled-components": "^5.3.6"

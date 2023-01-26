@@ -76,7 +76,7 @@ const OtpModal = ({ visible, onClose, phone }) => {
   };
 
   return (
-      <div id='container' onClick={handleOnClose} className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center'>
+      <div id='container' onClick={handleOnClose} className='z-10 fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center'>
           
               <div className='bg-white w-[500px] h-[500px] flex flex-col rounded-3xl m-2'>
                   <div className='flex flex-row-reverse text-4xl p-4 border-b-2 border-black'>
