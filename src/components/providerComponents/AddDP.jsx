@@ -30,7 +30,7 @@ const AddDP = ({photo,change,dp,setDp}) => {
           backgroundImage: `url(${URL.createObjectURL(photo)})`,
         }}
       >
-        <FaTimes onClick={resetShare} />
+        <FaTimes className='' onClick={resetShare} />
       </div>
     )): (
       <div

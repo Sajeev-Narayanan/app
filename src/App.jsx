@@ -64,8 +64,8 @@ function App() {
         <Route path="changePassword/:userId/:token" element={user != "" ? <Navigate to="/userlanding"/>: <ChangePassword />} />
         <Route element = {<UserRequireAuth/>}>
         <Route path='userlanding' element={<UserLandingPage />} />
-        <Route path="providers" element={<Providers />} />
-        <Route path="provider" element={<SingleProvider />} />
+        <Route path="providers/:service" element={<Providers />} />
+        <Route path="provider/:id" element={<SingleProvider />} />
         <Route path="chat" element={<Chat />} />
           <Route path="profile" element={<Profile />} />
           <Route path="messages" element={<UserMessages />} />

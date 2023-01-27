@@ -13,8 +13,7 @@ const Navebar = () => {
   // const user = useSelector(userData)
   const user2 = useSelector(userData2)
   const token = useSelector(refreshToken2)
-  console.log(token);
-  console.log(user2);
+ 
 
 
   const toast = useToast({

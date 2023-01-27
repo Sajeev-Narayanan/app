@@ -29,6 +29,53 @@ const AddImage = ({ visible, onClose }) => {
       data.append("file", image);
       data.append("upload_preset", "SparklingStories");
       data.append("cloud_name", "djrzqc3nc");
+      try {
+        fetch("https://api.cloudinary.com/v1_1/djrzqc3nc/image/upload", {
+        method: "post",
+        body: data,
+      }).then((res) => res.json())
+        .then(async (data) => {
+     
+          const imageUrl = data.url;
+
+          const response = await axios.post("/provider/addimage", { imageUrl, managers })
+          if (response.status === 201) {
+            toast({
+              position: "top",
+              variant: 'left-accent',
+              status: 'success',
+              isClosable: true,
+              title: 'Image added successfully',
+          
+            })
+            onClose()
+            SetImage("")
+            setLoad(false)
+          } else {
+            setError("select one")
+            setLoad(false)
+            toast({
+              position: "top",
+              variant: 'left-accent',
+              status: 'error',
+              isClosable: true,
+              title: 'Image adding failed',
+          
+            })
+          }
+        })
+      } catch (error) {
+        setError("select one")
+            setLoad(false)
+            toast({
+              position: "top",
+              variant: 'left-accent',
+              status: 'error',
+              isClosable: true,
+              title: 'Image adding failed',
+          
+            })
+      }
 
       fetch("https://api.cloudinary.com/v1_1/djrzqc3nc/image/upload", {
         method: "post",

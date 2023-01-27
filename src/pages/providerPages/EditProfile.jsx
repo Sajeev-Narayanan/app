@@ -133,7 +133,7 @@ const EditProfile = () => {
    
   useEffect(() => {
     try {
-      const response = axios.get("/provider/editProfile?managers=managers").then((response) => {
+      axios.get(`/provider/editProfile?managers=${managers}`).then((response) => {
         if (response.status === 201) {
           console.log(response.data.profile);
           // setProfile(response.data.profile)
