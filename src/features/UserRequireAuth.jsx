@@ -7,12 +7,12 @@ import { userData2 } from "./userAuthSlice";
 const UserRequireAuth = () => {
   // const user = useSelector(userData)
   const user2 = useSelector(userData2)
-    // console.log(user);
+  // console.log(user);
   const location = useLocation();
 
-  return  user2 !="" ? (
+  return user2 != "" ? (
     <Outlet />
-  ):(
+  ) : (
     <Navigate to="/login" state={{ from: location }} replace />
   );
 };
