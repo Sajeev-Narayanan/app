@@ -24,7 +24,7 @@ const ProviderLogin = () => {
 
   const [userData, setUserData] = useState({
     email: "",
-    password: "", 
+    password: "",
   });
 
   const [validation, setValidation] = useState({
@@ -99,21 +99,22 @@ const ProviderLogin = () => {
   };
 
 
-  const loginHandler = async() => {
+  const loginHandler = async () => {
     const data = { email: userData.email, password: userData.password, };
     try {
       const response = await axios.post("/provider/managerLogin", data);
       console.log("it is working ", response);
-      
-      
-      
+
+
+
       if (response.status === 201) {
-        const { accessToken, refreshToken, managers } = response.data
-        
-        const disp = dispatch(managersAuthChange({ accessToken, refreshToken, managers }))
+        const { accessToken, refreshToken, managers, managerId } = response.data
+
+
+        const disp = dispatch(managersAuthChange({ accessToken, refreshToken, managers, managerId }))
         if (disp) {
-          
-          navigate('/managersLanding')
+
+          // navigate('/managersLanding')
         }
         setValidation((prevState) => ({
           ...prevState,
@@ -134,8 +135,8 @@ const ProviderLogin = () => {
         }));
         return false;
       }
-       
-      
+
+
     } catch (error) {
       console.log(error + "&&&&&&&&&&&&&&&&&&&&");
       setValidation((prevState) => ({
@@ -156,13 +157,13 @@ const ProviderLogin = () => {
     navigate('/providersignup')
   }
   return (
-      <div className='w-full h-[1007px] grid lg:grid-cols-3 md:grid-cols-5 bg-white'>
-          <div className='md:col-span-2 lg:col-span-1 flex flex-col items-center justify-center'>
-              <h1 className='font-Viaoda text-7xl mb-10'>Login</h1>
-               <input onChange={valueSetting} onBlur={emailCheck} type="text" name='email' value={userData.email} placeholder='Email' className='w-[90%] h-20 mt-10 text-3xl border-2 border-black rounded-3xl text-center' />
-               {!validation.email.status && (<p className=" text-red-600">{validation.email.message}</p>)}
-              <input onChange={valueSetting} onBlur={passwordCheck} type={passwordType} name='password' value={userData.password} placeholder='Password' className='w-[90%] h-20 mt-10 text-3xl border-2 border-black rounded-3xl text-center'/>
-              <p className="relative w-full ">
+    <div className='w-full h-[1007px] grid lg:grid-cols-3 md:grid-cols-5 bg-white'>
+      <div className='md:col-span-2 lg:col-span-1 flex flex-col items-center justify-center'>
+        <h1 className='font-Viaoda text-7xl mb-10'>Login</h1>
+        <input onChange={valueSetting} onBlur={emailCheck} type="text" name='email' value={userData.email} placeholder='Email' className='w-[90%] h-20 mt-10 text-3xl border-2 border-black rounded-3xl text-center' />
+        {!validation.email.status && (<p className=" text-red-600">{validation.email.message}</p>)}
+        <input onChange={valueSetting} onBlur={passwordCheck} type={passwordType} name='password' value={userData.password} placeholder='Password' className='w-[90%] h-20 mt-10 text-3xl border-2 border-black rounded-3xl text-center' />
+        <p className="relative w-full ">
           <i className="absolute right-10 bottom-6 bg-white z-10 pl-2" onClick={passwordTypeChange}>
             {passwordVisible ? (
               <FiEye size={38} opacity={0.6} />
@@ -172,23 +173,23 @@ const ProviderLogin = () => {
           </i>
         </p>
         {!validation.password.status && (
-        <p className=" text-red-600">{validation.password.message}</p>
-      )}
+          <p className=" text-red-600">{validation.password.message}</p>
+        )}
         <button onClick={loginHandler} className='w-[60%] h-20 mt-10 text-3xl font-semibold border-2 border-black rounded-3xl text-center  hover:bg-black hover:text-white'>Login</button>
         {!validation.signupError.status && (
-        <p className=" text-red-600">{validation.signupError.message}</p>
-      )}
+          <p className=" text-red-600">{validation.signupError.message}</p>
+        )}
         <p className='mt-5'>Register using <a className='text-blue-900 font-semibold cursor-pointer' onClick={signupHandle}>Signup</a></p>
-        
+
         <Link to={'/managersForgotPassword'} className='mt-3 underline font-semibold text-gray-600'>Forgot password?</Link>
-              {/* <button className='w-[60%] h-20 mt-10 flex flex-row items-center pl-3 text-2xl font-medium border-2 border-black rounded-3xl text-center'><span className='w-[20%] h-20 flex items-center justify-center'><FcGoogle/></span>Login with google</button> */}
-          </div>
-          <div className='hidden md:flex items-center flex-col md:col-span-3 lg:col-span-2'>
-              <img src="../../public/login.gif" alt="LOGIN" className='w-[100%]' />
-              <h1 className='font-Viaoda text-7xl text-gray-500 absolute top-2/3'>Make everything easy</h1>
-          </div>
-          
-      
+        {/* <button className='w-[60%] h-20 mt-10 flex flex-row items-center pl-3 text-2xl font-medium border-2 border-black rounded-3xl text-center'><span className='w-[20%] h-20 flex items-center justify-center'><FcGoogle/></span>Login with google</button> */}
+      </div>
+      <div className='hidden md:flex items-center flex-col md:col-span-3 lg:col-span-2'>
+        <img src="../../public/login.gif" alt="LOGIN" className='w-[100%]' />
+        <h1 className='font-Viaoda text-7xl text-gray-500 absolute top-2/3'>Make everything easy</h1>
+      </div>
+
+
     </div>
   )
 }

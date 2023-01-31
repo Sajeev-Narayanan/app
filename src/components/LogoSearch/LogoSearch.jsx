@@ -5,10 +5,10 @@ import './LogoSearch.css'
 import { UilSearch } from '@iconscout/react-unicons'
 const LogoSearch = () => {
     return (
-        <div className="LogoSearch">
-            <img src={Logo} alt="" />
-            <div className="Search">
-                <input type="text" placeholder="#Explore" />
+        <div className="LogoSearch self-center">
+            <img width={50} src={Logo} alt="" />
+            <div className="Search bg-white">
+                <input className="bg-white" type="text" placeholder="#Explore" />
                 <div className="s-icon">
                     <UilSearch />
                 </div>

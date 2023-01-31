@@ -6,6 +6,8 @@ import GalaryCard from '../components/GalaryCard'
 import { useNavigate, useParams } from 'react-router-dom'
 import axios from '../config/axios'
 import { useToast } from '@chakra-ui/toast'
+import { useSelector } from 'react-redux'
+import { userData2, currentUserId } from '../features/userAuthSlice'
 
 
 const SingleProvider = () => {
@@ -14,9 +16,8 @@ const SingleProvider = () => {
   const navigate = useNavigate()
   const toast = useToast()
   const { id } = useParams();
-  const buttonhandle = () => {
-    navigate('/chat')
-  }
+  const userId = useSelector(currentUserId)
+
 
   useEffect(() => {
     try {
@@ -65,6 +66,23 @@ const SingleProvider = () => {
 
   }, []);
 
+  const buttonhandle = async () => {
+    try {
+
+      const response = await axios.post('/chat', {
+        senderId: userId, receiverId: data._id
+      })
+      if (response.status === 200) {
+        navigate('/chat')
+      } else {
+        console.log(response.error)
+      }
+    } catch (error) {
+      console.log(response.error)
+    }
+
+  }
+
   return (
     <div>
       <Navebar />
@@ -109,22 +127,18 @@ const SingleProvider = () => {
       <div className='mx-auto pl-2 pr-2 max-w-[400px] md:max-w-[900px] lg:max-w-[1500px] mt-16 flex flex-col items-center'>
         <h3 className='text-3xl font-semibold font-Volkhov mb-10'>Connect Us</h3>
         <div>
-          <h2 className='font-medium text-2xl text-center'>Address</h2>
-          <p className='text-center'>company name</p>
-          <p className='text-center'>house name</p>
-          <p className='text-center'>place</p>
-          <p className='text-center'>district</p>
-          <p className='text-center'>state</p>
-          <p className='text-center'>pincode</p>
-          <p className='text-center'><a href="mailto:example@gmail.com">example@gmail.com</a></p>
-          <p className='text-center'><a href="tel:1234567891">8547022049</a></p>
+          <h2 className='font-medium text-2xl text-center mb-4 underline'>Address</h2>
+          <p className='text-center'>{data.companyname}</p>
+          <p className='text-center'>{data != "" && data.place.join(" , ")}</p>
+          <p className='text-center underline'><a href={"mailto:" + data.email}>{data.email}</a></p>
+          < p className='text-center underline'><a href={"tel:" + data.mobile}>{data.mobile}</a></p>
 
-          <button onClick={buttonhandle} className='uppercase w-[160px] h-[60px] mt-10 mb-10 text-white text-xl font-semibold shadow-2xl hover:shadow-black hover:bg-green-800 duration-300 bg-green-700 rounded-full'>Chat with us</button>
         </div>
 
       </div>
+      <button onClick={buttonhandle} className='uppercase w-[160px] h-[60px]  text-white text-xl font-semibold shadow-2xl hover:shadow-black hover:bg-green-800 duration-300 bg-green-700 rounded-full fixed top-32 right-10'>Chat with us</button>
       <Footer />
-    </div>
+    </div >
   )
 }
 

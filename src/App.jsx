@@ -24,6 +24,7 @@ import Chat from './pages/chat/Chat';
 import Forgotpassword from './pages/Forgotpassword';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
+import ManagerChat from './pages/providerPages/chat/ManagerChat';
 import EditProfile from './pages/providerPages/EditProfile';
 import ManagerChangePassword from './pages/providerPages/ManagerChangePassword';
 import ManagersForgotPassword from './pages/providerPages/ManagersForgotPassword';
@@ -70,8 +71,8 @@ function App() {
           {/* <Route path="chat" element={<Chat />} /> */}
           <Route path="profile" element={<Profile />} />
           <Route path="messages" element={<UserMessages />} />
+          <Route path="chat" element={<Chat />} />
         </Route>
-        <Route path="chat" element={<Chat />} />
 
         <Route path="providerlogin" element={manager != "" ? <Navigate to="/managersLanding" /> : <ProviderLogin />} />
         <Route path="providersignup" element={manager != "" ? <Navigate to="/managersLanding" /> : <ProviderSignup />} />
@@ -83,6 +84,7 @@ function App() {
           <Route path="editprofile" element={<EditProfile />} />
           <Route path="messages" element={<Messages />} />
           <Route path="providerchat" element={<ProviderChat />} />
+          <Route path="managersChat" element={<ManagerChat />} />
         </Route>
 
 

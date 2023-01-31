@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { FcGoogle} from 'react-icons/fc'
+import { FcGoogle } from 'react-icons/fc'
 import { useNavigate } from 'react-router-dom'
 import LoginWithGoogle from '../components/LoginWithGoogle'
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -27,7 +27,7 @@ const Login = () => {
 
   const [userData, setUserData] = useState({
     email: "",
-    password: "", 
+    password: "",
   });
 
   const [validation, setValidation] = useState({
@@ -101,20 +101,20 @@ const Login = () => {
     }
   };
 
-  const loginHandler = async() => {
+  const loginHandler = async () => {
     const data = { email: userData.email, password: userData.password, };
     try {
       const response = await axios.post("/login", data);
       console.log("it is working ", response);
-      
+
       console.log(response.status);
-      
+
       if (response.status === 201) {
-        const { accessToken, refreshToken, user } = response.data
-        
-        const disp = dispatch(userAuthChange({ accessToken, refreshToken, user }))
+        const { accessToken, refreshToken, user, id } = response.data
+
+        const disp = dispatch(userAuthChange({ accessToken, refreshToken, user,id }))
         if (disp) {
-          
+
           navigate('/')
         }
         setValidation((prevState) => ({
@@ -136,20 +136,20 @@ const Login = () => {
         }));
         return false;
       }
-       
-      
+
+
     } catch (error) {
-      
-      
-        setValidation((prevState) => ({
-          ...prevState,
-          signupError: {
-            value: false,
-            message: "Incorrect password or email"
-          },
-        }));
-        return false;
-     
+
+
+      setValidation((prevState) => ({
+        ...prevState,
+        signupError: {
+          value: false,
+          message: "Incorrect password or email"
+        },
+      }));
+      return false;
+
       // setError(true);
     }
   }
@@ -159,12 +159,12 @@ const Login = () => {
     navigate('/signup')
   }
   return (
-      <div className='w-full h-[1007px] grid lg:grid-cols-3 md:grid-cols-5 bg-white'>
-          <div className='md:col-span-2 lg:col-span-1 flex flex-col items-center justify-center'>
-              <h1 className='font-Viaoda text-7xl mb-10'>Login</h1>
+    <div className='w-full h-[1007px] grid lg:grid-cols-3 md:grid-cols-5 bg-white'>
+      <div className='md:col-span-2 lg:col-span-1 flex flex-col items-center justify-center'>
+        <h1 className='font-Viaoda text-7xl mb-10'>Login</h1>
         <input onChange={valueSetting} onBlur={emailCheck} type="text" name='email' value={userData.email} placeholder='Email' className='w-[90%] h-20 mt-10 text-3xl border-2 border-black rounded-3xl text-center' />
         {!validation.email.status && (
-        <p className=" text-red-600">{validation.email.message}</p>
+          <p className=" text-red-600">{validation.email.message}</p>
         )}
         <input onChange={valueSetting} onBlur={passwordCheck} type={passwordType} name='password' value={userData.password} placeholder='Password' className='w-[90%] h-20 mt-10 text-3xl border-2 border-black rounded-3xl text-center' />
         <p className="relative w-full ">
@@ -177,23 +177,23 @@ const Login = () => {
           </i>
         </p>
         {!validation.password.status && (
-        <p className=" text-red-600">{validation.password.message}</p>
-      )}
+          <p className=" text-red-600">{validation.password.message}</p>
+        )}
         <button onClick={loginHandler} className='w-[60%] h-20 mt-10 text-3xl font-semibold border-2 border-black rounded-3xl text-center hover:scale-105 hover:bg-black hover:text-white'>Login</button>
         {!validation.signupError.status && (
-        <p className=" text-red-600">{validation.signupError.message}</p>
-      )}
+          <p className=" text-red-600">{validation.signupError.message}</p>
+        )}
         <p className='mt-5'>Register using <a className='text-blue-900 font-semibold cursor-pointer' onClick={signupHandle}>Signup</a></p>
         <Link to={'/forgotpassword'} className='mt-3 underline font-semibold text-gray-600'>Forgot password?</Link>
         {/* <button className='w-[60%] h-20 mt-10 flex flex-row items-center pl-3 text-2xl font-medium border-2 border-black rounded-3xl text-center  hover:bg-black hover:text-white'><span className='w-[20%] h-20 flex items-center justify-center'><FcGoogle /></span>Login with google</button> */}
-        <LoginWithGoogle/>
-          </div>
-          <div className='hidden md:flex items-center flex-col md:col-span-3 lg:col-span-2'>
-              <img src="../../public/login.gif" alt="LOGIN" className='w-[100%]' />
-              <h1 className='font-Viaoda text-7xl text-gray-500 absolute top-2/3'>Make everything easy</h1>
-          </div>
-          
-      
+        <LoginWithGoogle />
+      </div>
+      <div className='hidden md:flex items-center flex-col md:col-span-3 lg:col-span-2'>
+        <img src="../../public/login.gif" alt="LOGIN" className='w-[100%]' />
+        <h1 className='font-Viaoda text-7xl text-gray-500 absolute top-2/3'>Make everything easy</h1>
+      </div>
+
+
     </div>
   )
 }

@@ -1,20 +1,20 @@
 import React, { useRef, useState } from "react";
 
-import "./Chat.css";
+import "./ManagerChat.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { currentUserId, userData2 } from "../../features/userAuthSlice";
-import LogoSearch from "../../components/LogoSearch/LogoSearch";
-import axios from '../../config/axios'
-import Conversation from "../../components/Coversation/Coversation";
-import ChatBox from "../../components/ChatBox/ChatBox";
+import axios from '../../../config/axios'
 import { io } from "socket.io-client";
+import { managersId } from "../../../features/managersAuthSlice";
+import LogoSearch from "../../../components/LogoSearch/LogoSearch";
+import Conversation from "../../../components/Coversation/Coversation";
+import ChatBox from "../../../components/ChatBox/ChatBox";
 
-const Chat = () => {
+const ManagerChat = () => {
     const dispatch = useDispatch();
     const socket = useRef();
     // const { user } = useSelector((state) => state.authReducer.authData);
-    const userId = useSelector(currentUserId)
+    const userId = useSelector(managersId)
 
     const [chats, setChats] = useState([]);
     const [onlineUsers, setOnlineUsers] = useState([]);
@@ -112,4 +112,4 @@ const Chat = () => {
     );
 };
 
-export default Chat;
+export default ManagerChat;
