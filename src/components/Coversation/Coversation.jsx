@@ -3,28 +3,32 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import axios from "../../config/axios";
 
-const Conversation = ({ data, currentUser, online }) => {
+const Conversation = ({ data, currentUser, online, type }) => {
 
     const [userData, setUserData] = useState(null)
-    // const dispatch = useDispatch()
-    // console.log("^^^^^^^^", data)
-    // console.log("currentUser:", currentUser)
 
 
     useEffect(() => {
 
         const userId = data.members.find((id) => id !== currentUser)
-        console.log("@@@@@", userId)
 
         const getUserData = async () => {
-            try {
-                const { data } = await axios.get(`/chatManagers/${userId}`)
-                console.log(data, "!!!!!!!!!!!!!!!!!!!!")
-                setUserData(data)
-                // dispatch({ type: "SAVE_USER", data: data })
-            }
-            catch (error) {
-                console.log(error)
+            if (type == "manager") {
+                try {
+                    const { data } = await axios.get(`/provider/chatUsers/${userId}`)
+                    setUserData(data)
+                }
+                catch (error) {
+                    console.log(error)
+                }
+            } else {
+                try {
+                    const { data } = await axios.get(`/chatManagers/${userId}`)
+                    setUserData(data)
+                }
+                catch (error) {
+                    console.log(error)
+                }
             }
         }
 
@@ -42,7 +46,7 @@ const Conversation = ({ data, currentUser, online }) => {
                         style={{ width: "50px", height: "50px" }}
                     />
                     <div className="name flex flex-col ml-4" style={{ fontSize: '0.8rem' }}>
-                        <span className="text-xl font-bold">{userData?.companyname}</span>
+                        <span className="text-xl font-bold break-all">{userData?.companyname ? userData?.companyname : userData?.email}</span>
                         <span style={{ color: online ? "#51e200" : "" }}>{online ? "Online" : "Offline"}</span>
                     </div>
                 </div>

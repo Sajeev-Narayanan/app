@@ -41,7 +41,7 @@ const Navebar = () => {
   const handleLogout = async (e) => {
     const response = await axios.post('/provider/managersLogout', { email: managers, token: token })
     if (response.status === 204) {
-      dispatch(managersAuthChange({ managers: "", accessToken: "", refreshToken: "" }))
+      dispatch(managersAuthChange({ managers: "", accessToken: "", refreshToken: "", managerId: "" }))
       navigate("/providerlogin")
     } else {
       toast({

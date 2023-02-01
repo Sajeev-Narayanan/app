@@ -7,7 +7,7 @@ import { format } from "timeago.js";
 import InputEmoji from 'react-input-emoji'
 import axios from "../../config/axios";
 
-const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
+const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage, type, addEstimate, showEstimate, setReceiver }) => {
     const [userData, setUserData] = useState(null);
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
@@ -15,17 +15,26 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
     const handleChange = (newMessage) => {
         setNewMessage(newMessage)
     }
+    setReceiver(chat?.members.find((id) => id !== currentUser))
 
     // fetching data for header
     useEffect(() => {
         const user = chat?.members?.find((id) => id !== currentUser);
         const getUserData = async () => {
-            try {
-                const { data } = await axios.get(`/chatManagers/${user}`);
-                setUserData(data);
-                console.log("chatbox userdata", data)
-            } catch (error) {
-                console.log(error);
+            if (type == "manager") {
+                try {
+                    const { data } = await axios.get(`/provider/chatUsers/${user}`);
+                    setUserData(data);
+                } catch (error) {
+                    console.log(error);
+                }
+            } else {
+                try {
+                    const { data } = await axios.get(`/chatManagers/${user}`);
+                    setUserData(data);
+                } catch (error) {
+                    console.log(error);
+                }
             }
         };
 
@@ -98,22 +107,25 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
                         {/* chat-header */}
                         <div className="chat-header">
                             <div className="follower">
-                                <div className="flex items-center">
-                                    <img
-                                        src={
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center">
+                                        <img
+                                            src={
 
-                                            userData?.profilePhoto ? userData.profilePhoto : "img-scelton.png"
-                                        }
-                                        alt="Profile"
-                                        className="rounded-full "
+                                                userData?.profilePhoto ? userData.profilePhoto : "img-scelton.png"
+                                            }
+                                            alt="Profile"
+                                            className="rounded-full "
 
-                                        style={{ width: "50px", height: "50px" }}
-                                    />
-                                    <div className="name ml-6" style={{ fontSize: "0.9rem" }}>
-                                        <span className="text-2xl font-extrabold">
-                                            {userData?.companyname}
-                                        </span>
+                                            style={{ width: "50px", height: "50px" }}
+                                        />
+                                        <div className="name ml-6" style={{ fontSize: "0.9rem" }}>
+                                            <span className="text-2xl font-extrabold">
+                                                {userData?.companyname ? userData?.companyname : userData?.email}
+                                            </span>
+                                        </div>
                                     </div>
+                                    {type === "manager" ? <button onClick={() => addEstimate(true)} className="bg-black p-2 rounded-xl text-white font-semibold hover:scale-105 mr-20">Create Estimate</button> : <button onClick={() => showEstimate(true)} className="bg-black p-2 rounded-xl text-white font-semibold hover:scale-105 mr-20">Estimate</button>}
                                 </div>
                             </div>
                             <hr
