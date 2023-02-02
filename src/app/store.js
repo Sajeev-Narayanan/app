@@ -5,6 +5,7 @@ import storage from 'redux-persist/lib/storage' // defaults to localStorage for 
 // import userGoogleAuthSlice from "../features/userGoogleAuthSlice";
 import userAuthSlice from "../features/userAuthSlice";
 import managersAuthSlice from "../features/managersAuthSlice";
+import paymentSlice from "../features/paymentSlice";
 
 
 const persistConfig = { // configuration object for redux-persist
@@ -13,11 +14,12 @@ const persistConfig = { // configuration object for redux-persist
 }
 
 const reducer = combineReducers({
-    
+
     auth: authSlice,
     userLogin: userAuthSlice,
     managersLogin: managersAuthSlice,
-  });
+    payment: paymentSlice,
+});
 
 const persistedReducer = persistReducer(persistConfig, reducer) // create a persisted reducer
 
@@ -29,6 +31,6 @@ const store = configureStore({
 })
 
 
-const  persistor = persistStore(store); // used to create the persisted store, persistor will be used in the next step
+const persistor = persistStore(store); // used to create the persisted store, persistor will be used in the next step
 
-export {store, persistor}
+export { store, persistor }

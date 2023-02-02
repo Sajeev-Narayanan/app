@@ -24,6 +24,7 @@ const ManagerChat = () => {
     const [sendMessage, setSendMessage] = useState(null);
     const [addEstimate, setAddEstimate] = useState(false);
     const [receivedMessage, setReceivedMessage] = useState(null);
+    const [receiver, setReceiver] = useState("");
 
     const addEstimateClose = () => setAddEstimate(false);
     // Get the chat in chat section
@@ -66,10 +67,9 @@ const ManagerChat = () => {
 
         );
     }, []);
-    let chatMember;
 
     const checkOnlineStatus = (chat) => {
-        chatMember = chat.members.find((member) => member !== userId);
+        const chatMember = chat.members.find((member) => member !== userId);
         const online = onlineUsers.find((user) => user.userId === chatMember);
         return online ? true : false;
     };
@@ -116,10 +116,11 @@ const ManagerChat = () => {
                         receivedMessage={receivedMessage}
                         type="manager"
                         addEstimate={setAddEstimate}
+                        setReceiver={setReceiver}
                     />
                 </div>
             </div>
-            <CreateEstimateModal onClose={addEstimateClose} visible={addEstimate} userId={chatMember} managerId={userId} />
+            <CreateEstimateModal onClose={addEstimateClose} visible={addEstimate} userId={receiver} managerId={userId} />
         </>
     );
 };

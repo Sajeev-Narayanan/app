@@ -16,6 +16,8 @@
     "@emotion/styled": "^11.10.5",
     "@iconscout/react-unicons": "^1.1.6",
     "@reduxjs/toolkit": "^1.9.1",
+    "@stripe/react-stripe-js": "^1.16.4",
+    "@stripe/stripe-js": "^1.46.0",
     "axios": "^1.2.2",
     "faker": "^5.5.3",
     "framer-motion": "^8.5.2",

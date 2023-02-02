@@ -23,6 +23,8 @@ import Chat from './pages/chat/Chat';
 // import Chat from './pages/Chat';
 import Forgotpassword from './pages/Forgotpassword';
 import Login from './pages/Login';
+import Completion from './pages/payment/Completion';
+import Payment from './pages/payment/Payment';
 import Profile from './pages/Profile';
 import ManagerChat from './pages/providerPages/chat/ManagerChat';
 import EditProfile from './pages/providerPages/EditProfile';
@@ -72,6 +74,8 @@ function App() {
           <Route path="profile" element={<Profile />} />
           <Route path="messages" element={<UserMessages />} />
           <Route path="chat" element={<Chat />} />
+          <Route path="/completion" element={<Completion />} />
+          <Route path="/payment" element={<Payment />} />
         </Route>
 
         <Route path="providerlogin" element={manager != "" ? <Navigate to="/managersLanding" /> : <ProviderLogin />} />
