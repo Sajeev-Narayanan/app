@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiFillCloseCircle } from 'react-icons/ai';
 import { useSelector } from 'react-redux';
 import { managersData } from '../../features/managersAuthSlice';
@@ -15,6 +15,7 @@ const CreateEstimateModal = ({ visible, onClose, userId, managerId }) => {
     const [price, setPrice] = useState("");
     const [total, setTotal] = useState(0);
     const [estimate, setEstimate] = useState([]);
+    const [prevEstimate, setPrevEstimate] = useState([]);
     const toast = useToast();
 
     const handleOnClose = (e) => {
@@ -27,6 +28,15 @@ const CreateEstimateModal = ({ visible, onClose, userId, managerId }) => {
         e.target.value == "#" ? setError("Select one") : setService(e.target.value)
 
     }
+
+    useEffect(() => {
+        axios.get(`/provider/estimateDetails/${userId}/${managerId}`).then((res) => {
+            setPrevEstimate(res.data)
+            console.log("############", res.data)
+        })
+    }, [userId]);
+
+
     const addHandler = () => {
         const added = estimate.filter((e) => {
             if (e.service === service) {
@@ -79,14 +89,33 @@ const CreateEstimateModal = ({ visible, onClose, userId, managerId }) => {
 
     if (!visible) return null;
     return (
-        <div id='container' onClick={handleOnClose} className='fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center'>
+        <div id='container' onClick={handleOnClose} className='z-10 fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center'>
 
             <div className='bg-white w-[700px] pb-5 min-h-[500px] flex flex-col rounded-3xl m-2'>
                 <div className='flex flex-row-reverse text-4xl p-4 border-b-2 border-black'>
                     <button onClick={onClose} ><AiFillCloseCircle /></button>
                 </div>
-                <div className='h-full w-full flex items-center justify-center flex-col'>
-                    <h1 className='text-3xl font-semibold mb-8'>Add Service</h1>
+                <div className='h-full w-full flex items-center justify-center flex-col'>{prevEstimate &&
+                    <div>
+                        <h1 className='text-3xl font-semibold mb-4 text-center'>Your Estimates</h1>
+                        {prevEstimate.map((e) => (
+                            < div className='mb-2 border-b-2'>
+                                <p className='text-lg font-semibold'>EstimateId : <span className='text-base font-normal'>{e._id}</span></p>
+                                <p className='text-lg font-semibold'>Amound : <span className='text-base font-normal'>{e.estimate.reduce((sum, amount) => {
+                                    console.log("sum", sum, "amount", amount);
+                                    return (Number(sum) + Number(amount.price))
+                                }, 0)}
+
+                                </span ></p>
+                                < p className='text-lg font-semibold' > Advance : <span className='text-base font-normal'>{Math.floor(e.estimate.reduce((sum, amount) => { return (Number(sum) + Number(amount.price)) / 2 }, 0))}</span ></p>
+                                <p className='text-lg font-semibold'>Payment : {e.paid == true ? < span className='text-base font-normal'>Completed</span> : < span className='text-base font-normal'>Pending...</span>}</p>
+                            </div>
+                        ))}
+
+
+                    </div>
+                }
+                    <h1 className='text-3xl font-semibold mb-8 mt-4'>Add Estimate</h1>
 
                     <select
                         name="service"
@@ -153,7 +182,7 @@ const CreateEstimateModal = ({ visible, onClose, userId, managerId }) => {
                         </TableContainer>
                     )}
 
-                    <button onClick={saveHandler} className='bg-green-500 hover:bg-green-600 rounded-3xl h-16 w-[60%] text-lg font-medium mt-6 p-4 uppercase'>save</button>
+                    <button onClick={saveHandler} className='bg-green-500 cursor-pointer hover:bg-green-600 rounded-3xl h-16 w-[60%] text-lg font-medium mt-6 p-4 uppercase'>save</button>
                 </div>
             </div>
 

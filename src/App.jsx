@@ -17,6 +17,7 @@ import Adminlanding from './pages/adminPages/Adminlanding';
 import AdminLogin from './pages/adminPages/AdminLogin';
 import EventManagers from './pages/adminPages/EventManagers';
 import Requests from './pages/adminPages/Requests';
+import TransactionHistory from './pages/adminPages/TransactionHistory';
 import UserManagement from './pages/adminPages/UserManagement';
 import ChangePassword from './pages/ChangePassword';
 import Chat from './pages/chat/Chat';
@@ -98,6 +99,7 @@ function App() {
           <Route path="usermanagement" element={<UserManagement />} />
           <Route path="requests" element={<Requests />} />
           <Route path="eventmanagers" element={<EventManagers />} />
+          <Route path='transactions' element={<TransactionHistory />} />
         </Route>
 
       </Route>
