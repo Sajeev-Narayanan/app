@@ -11,7 +11,7 @@ import { paymentChange } from '../../features/paymentSlice';
 import { useNavigate } from 'react-router-dom';
 
 const ShowEstimateModal = ({ visible, onClose, userId, managerId }) => {
-    const [total, setTotal] = useState(0);
+    // const [total, setTotal] = useState(0);
     const [estimate, setEstimate] = useState([]);
     const toast = useToast();
     const dispatch = useDispatch();
@@ -24,13 +24,13 @@ const ShowEstimateModal = ({ visible, onClose, userId, managerId }) => {
 
 
     useEffect(() => {
-        setTotal(0)
+        // setTotal(0)
         try {
             axios.post('/estimateData', { userId, managerId }).then((response) => {
 
                 if (response.status === 201) {
                     setEstimate(response.data)
-                    response.data.estimate.map((e) => { setTotal(prevState => Number(prevState) + Number(e.price)) })
+                    // response.data.estimate.map((e) => { setTotal(prevState => Number(prevState) + Number(e.price)) })
                 } else {
                     toast({
                         position: "top",
@@ -54,13 +54,17 @@ const ShowEstimateModal = ({ visible, onClose, userId, managerId }) => {
             })
             onClose()
         }
-    }, [visible]);
+    }, [managerId]);
 
-    const payHandler = async () => {
-        const amount = total / 2;
-        console.log(estimate._id, "??????????????")
-        await dispatch(paymentChange({ amount, estimateId: estimate._id }))
+    const payHandler = async (amount, estimateId) => {
+        console.log(estimateId, amount, "??????????????")
+        await dispatch(paymentChange({ amount, estimateId }))
         navigate("/payment")
+    }
+    const total = (item) => {
+        return item?.estimate.reduce((sum, amount) => {
+            return (Number(sum) + Number(amount.price))
+        }, 0)
     }
 
     if (!visible) return null;
@@ -76,53 +80,67 @@ const ShowEstimateModal = ({ visible, onClose, userId, managerId }) => {
 
 
 
-                    {estimate?.estimate && (
-                        <TableContainer>
-                            <Table variant='simple'>
-                                <Thead>
-                                    <Tr>
-                                        <Th>Services</Th>
-                                        <Th>  </Th>
-                                        <Th isNumeric>price</Th>
-                                    </Tr>
-                                </Thead>
-                                <Tbody>
-                                    {estimate?.estimate.map((e) =>
-                                    (
-                                        < Tr >
-                                            <Td>
-                                                {e.service}
-                                            </Td>
-                                            <Td>  </Td>
-                                            <Td>
-                                                {e.price}
-                                            </Td>
+                    {estimate.length > 0 && (estimate.map((item) => (
+                        <>
+                            < TableContainer width={350}>
+                                <Table variant='simple'>
+                                    <Thead>
+                                        <Tr>
+                                            <Th>Services</Th>
+                                            <Th>  </Th>
+                                            <Th isNumeric>price</Th>
                                         </Tr>
-                                    )
+                                    </Thead>
+
+                                    <Tbody>
+                                        {item?.estimate.map((e) =>
+                                            < Tr >
+                                                <Td>
+                                                    {e.service}
+                                                </Td>
+                                                <Td>  </Td>
+                                                <Td>
+                                                    {e.price}
+                                                </Td>
+                                            </Tr>
+                                        )
+                                        }
+
+                                    </Tbody>
+                                    <Tfoot>
+                                        < Tr >
+                                            <Th>Total</Th>
+                                            <Th></Th>
+                                            <Th>{item?.estimate && total(item)}</Th>
+                                        </Tr>
+                                        < Tr >
+                                            <Th>Advance</Th>
+                                            <Th></Th>
+                                            <Th>{Math.floor(item?.estimate && total(item) / 2)}</Th >
+                                        </Tr>
+
+                                    </Tfoot>
+
+
+
+
+                                </Table>
+
+
+                            </TableContainer>
+                            {item?.paid == false ?
+                                < button
+                                    onClick={() => payHandler(
+                                        Math.floor(item?.estimate && total(item) / 2), item?._id
                                     )}
+                                    className='bg-green-500 hover:bg-green-600 rounded-3xl h-16 w-[60%] text-xl font-bold text-white mt-6 p-4 uppercase flex items-center justify-center'>Pay &nbsp;
+                                    <span className='font-extrabold font-Viaoda text-3xl'>₹{Math.floor(item?.estimate && total(item) / 2)}</span>
+                                </button>
+                                :
+                                <h1 className='mt-6 font-semibold text-xl text-green-500'>Already payment completed!</h1>}
+                        </>
+                    )))}
 
-                                </Tbody>
-                                <Tfoot>
-                                    <Tr>
-                                        <Th>Total</Th>
-                                        <Th></Th>
-                                        <Th>{total}</Th>
-                                    </Tr>
-                                    <Tr>
-                                        <Th>Advance</Th>
-                                        <Th></Th>
-                                        <Th>{total / 2}</Th>
-                                    </Tr>
-                                </Tfoot>
-
-
-                            </Table>
-
-
-                        </TableContainer>
-                    )}
-
-                    {estimate?.paid == false ? < button onClick={payHandler} className='bg-green-500 hover:bg-green-600 rounded-3xl h-16 w-[60%] text-xl font-bold text-white mt-6 p-4 uppercase flex items-center justify-center'>Pay &nbsp;<span className='font-extrabold font-Viaoda text-3xl'>₹{total / 2}</span></button> : <h1 className='mt-6 font-semibold text-xl text-green-500'>Already payment completed!</h1>}
                 </div>
             </div>
 

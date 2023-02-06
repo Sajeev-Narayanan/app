@@ -23,9 +23,9 @@ const Navebar = () => {
 
   const navigate = useNavigate()
 
-  const homeHandle = () => {
-    navigate('/managersLanding')
-  }
+  // const homeHandle = () => {
+  //   navigate('/managersLanding')
+  // }
   const profileHandle = () => {
     navigate('/providerprofile')
   }
@@ -42,7 +42,7 @@ const Navebar = () => {
     const response = await axios.post('/provider/managersLogout', { email: managers, token: token })
     if (response.status === 204) {
       dispatch(managersAuthChange({ managers: "", accessToken: "", refreshToken: "", managerId: "" }))
-      navigate("/providerlogin")
+      navigate("/providerLogin")
     } else {
       toast({
         variant: 'left-accent',
@@ -55,28 +55,30 @@ const Navebar = () => {
   return (
     <div className='h-20 px-8 z-50 bg-white top-0 sticky shadow-md'>
       <div className='flex items-center h-20 max-w-[1240px] mx-auto justify-between'>
-        <h1 className='w-full text-3xl font-bold'>LOGO</h1>
+        {/* <h1 className='w-full text-3xl font-bold'>LOGO</h1> */}
+        <img src="logo.png" alt="logo" width={120} />
         <ul className='hidden md:flex'>
-          <li onClick={homeHandle} className='p-4 font-bold cursor-pointer'>HOME</li>
+          {/* <li onClick={homeHandle} className='p-4 font-bold cursor-pointer'>HOME</li> */}
 
 
           <li onClick={profileHandle} className='p-4 font-bold cursor-pointer'>PROFILE</li>
           <li onClick={messageHandler} className='p-4 font-bold cursor-pointer'>MESSAGES</li>
-          {managers && <li onClick={(e) => { handleLogout(e) }} className='p-4 font-bold cursor-pointer'>LOGOUT</li>}
+          {managers && <li onClick={(e) => { handleLogout(e) }} className='p-4 hover:bg-black hover:text-white rounded-xl font-bold cursor-pointer'>LOGOUT</li>}
         </ul>
         <div className='block md:hidden' onClick={handleNav}>
           {!nav ? <AiOutlineClose size={30} /> : <AiOutlineMenu size={30} />}
 
         </div>
         <div className={!nav ? 'fixed left-0 top-0 w-[60%] border-r border-r-gray-900 h-full bg-white ease-in-out duration-500 md:hidden' : 'fixed left-[-100%]'}>
-          <h1 className='w-full text-3xl font-bold m-4'>LOGO</h1>
+          {/* <h1 className='w-full text-3xl font-bold m-4'>LOGO</h1> */}
+          <img src="logo.png" alt="logo" width={260} />
           <ul className='p-4 uppercase'>
-            <li onClick={homeHandle} className='p-4 border-b border-gray-600 font-bold cursor-pointer'>HOME</li>
+            {/* <li onClick={homeHandle} className='p-4 border-b border-gray-600 font-bold cursor-pointer'>HOME</li> */}
 
 
-            <li className='p-4 border-b border-gray-600 font-bold cursor-pointer'>PROFILE</li>
-            <li onClick={messageHandler} className='p-4 font-bold cursor-pointer'>MESSAGES</li>
-            {managers && <li onClick={(e) => { handleLogout(e) }} className='p-4 font-bold cursor-pointer'>LOGOUT</li>}
+            <li className='p-4 border-b border-gray-600 font-bold cursor-pointer rounded-xl mt-2'>PROFILE</li>
+            <li onClick={messageHandler} className='p-4 border-b border-gray-600 font-bold cursor-pointer rounded-xl mt-2'>MESSAGES</li>
+            {managers && <li onClick={(e) => { handleLogout(e) }} className='p-4 mt-2 border-b border-gray-600 hover:bg-black hover:text-white rounded-xl font-bold cursor-pointer'>LOGOUT</li>}
           </ul>
         </div>
       </div>

@@ -1,5 +1,5 @@
-import React,{useState} from 'react'
-import { FcGoogle} from 'react-icons/fc'
+import React, { useState } from 'react'
+import { FcGoogle } from 'react-icons/fc'
 import { useNavigate } from 'react-router-dom'
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import axios from '../config/axios'
@@ -27,7 +27,7 @@ const Signup = () => {
   const [userData, setUserData] = useState({
     email: "",
     phone: "",
-    password: "", 
+    password: "",
   });
 
   const [validation, setValidation] = useState({
@@ -133,56 +133,70 @@ const Signup = () => {
 
   const navigate = useNavigate()
   const loginHandle = () => {
-  navigate('/login')
+    navigate('/login')
   }
-  
 
-  const signupHandler = async () => { 
-    
-    const data = { email: userData.email,phone:userData.phone, password: userData.password, };
-    try {
-      const response = await axios.post("/signup", data);
-      console.log("it is working ", response);
-      
-      
-      
-      if (response.status === 201) {
-        setOtpmodal(true)
-        // dispatch(authChange({accessToken,refreshToken,adminName}))
-        setValidation((prevState) => ({
-          ...prevState,
-          signupError: {
-            value: true,
-            message: "",
-          },
-        }));
-        return true;
 
-      } else {
+  const signupHandler = async () => {
+    setGsignupErr(false)
+    if (emailCheck(), passwordCheck(), PhoneCheck()) {
+      const data = { email: userData.email, phone: userData.phone, password: userData.password, };
+      try {
+        const response = await axios.post("/signup", data);
+        console.log("it is working ", response);
+
+
+
+        if (response.status === 201) {
+          setOtpmodal(true)
+          // dispatch(authChange({accessToken,refreshToken,adminName}))
+          setValidation((prevState) => ({
+            ...prevState,
+            signupError: {
+              value: true,
+              message: "",
+            },
+          }));
+          return true;
+
+        } else {
+          setValidation((prevState) => ({
+            ...prevState,
+            signupError: {
+              value: false,
+              message: "Something wrong happened",
+            },
+          }));
+          return false;
+        }
+
+
+      } catch (error) {
         setValidation((prevState) => ({
           ...prevState,
           signupError: {
             value: false,
-            message: "Something wrong happened",
+            message: "User already registered!",
           },
         }));
         return false;
+        // setError(true);
       }
-       
-      
-    } catch (error) {
-      console.log(error);
-      // setError(true);
+    } else {
+      PhoneCheck()
+      passwordCheck()
+      emailCheck()
     }
   }
 
   return (
-    <div className='w-full h-[1007px] grid lg:grid-cols-3 md:grid-cols-5 bg-white'>
-    <div className='md:col-span-2 lg:col-span-1 flex flex-col items-center justify-center'>
+    <div className='w-full pb-7 grid lg:grid-cols-3 md:grid-cols-5 bg-white'>
+      <div className='md:col-span-2 lg:col-span-1 flex flex-col items-center justify-center'>
+        <img src="logo.png" alt="logo" width={330} />
         <h1 className='font-Viaoda text-7xl mb-10'>Signup</h1>
         <input onChange={valueSetting} onBlur={emailCheck} type="text" name='email' value={userData.email} placeholder='Email' className='w-[90%] h-20 mt-10 text-3xl border-2 border-black rounded-3xl text-center' />
         {!validation.email.status && (
-        <p className=" text-red-600">{validation.email.message}</p>
+          <p className=" text-red-600">{validation.email.message}</p>
         )}
         <input
           type="text"
@@ -194,8 +208,8 @@ const Signup = () => {
           className='w-[90%] h-20 mt-10 text-3xl border-2 border-black rounded-3xl text-center'
         />
         {!validation.phone.status && (
-        <p className=" text-red-600">{validation.phone.message}</p>
-      )}
+          <p className=" text-red-600">{validation.phone.message}</p>
+        )}
         <input onChange={valueSetting} onBlur={passwordCheck} type={passwordType} name='password' value={userData.password} placeholder='Password' className='w-[90%] h-20 mt-10 text-3xl border-2 border-black rounded-3xl text-center' />
         <p className="relative w-full ">
           <i className="absolute right-10 bottom-6 bg-white z-10 pl-2" onClick={passwordTypeChange}>
@@ -207,28 +221,28 @@ const Signup = () => {
           </i>
         </p>
         {!validation.password.status && (
-        <p className=" text-red-600">{validation.password.message}</p>
-      )}
-        <button onClick={signupHandler} className='w-[60%] h-20 mt-10 text-3xl font-semibold border-2 border-black rounded-3xl text-center'>Signup</button>
-        {!validation.signupError.status && (
-        <p className=" text-red-600">{validation.signupError.message}</p>
+          <p className=" text-red-600">{validation.password.message}</p>
         )}
-        
+        <button onClick={signupHandler} className='w-[60%] h-20 mt-10 text-3xl font-semibold border-2 border-black rounded-3xl text-center hover:scale-105 hover:bg-black hover:text-white'>Signup</button>
+        {!validation.signupError.status && (
+          <p className=" text-red-600">{validation.signupError.message}</p>
+        )}
+
         <p className='mt-5'>Already a member?<a className='text-blue-900 font-semibold cursor-pointer' onClick={loginHandle}>Login</a></p>
         <SignupWithGoogle onError={handleError} />
-        {GsignupErr == true &&(
-        <p className=" text-red-600 mt-4">Signup failed! Try again</p>
+        {GsignupErr == true && (
+          <p className=" text-red-600 mt-4">User already registered!</p>
         )}
-    </div>
-    <div className='hidden md:flex items-center flex-col md:col-span-3 lg:col-span-2'>
+      </div>
+      <div className='hidden md:flex items-center flex-col md:col-span-3 lg:col-span-2'>
         <img src="../../public/login.gif" alt="LOGIN" className='w-[100%]' />
         <h1 className='font-Viaoda text-7xl text-gray-500 absolute top-2/3'>Make everything easy</h1>
       </div>
-      
-      <UserOtpModal onClose={addServiceClose} visible={Optmodal} phone={ userData.phone} />
-    
 
-</div>
+      <UserOtpModal onClose={addServiceClose} visible={Optmodal} phone={userData.phone} />
+
+
+    </div>
   )
 }
 

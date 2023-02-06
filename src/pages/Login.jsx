@@ -112,10 +112,10 @@ const Login = () => {
       if (response.status === 201) {
         const { accessToken, refreshToken, user, id } = response.data
 
-        const disp = dispatch(userAuthChange({ accessToken, refreshToken, user,id }))
+        const disp = dispatch(userAuthChange({ accessToken, refreshToken, user, id }))
         if (disp) {
 
-          navigate('/')
+          navigate('/home')
         }
         setValidation((prevState) => ({
           ...prevState,
@@ -161,6 +161,7 @@ const Login = () => {
   return (
     <div className='w-full h-[1007px] grid lg:grid-cols-3 md:grid-cols-5 bg-white'>
       <div className='md:col-span-2 lg:col-span-1 flex flex-col items-center justify-center'>
+        <img src="logo.png" alt="logo" width={330} />
         <h1 className='font-Viaoda text-7xl mb-10'>Login</h1>
         <input onChange={valueSetting} onBlur={emailCheck} type="text" name='email' value={userData.email} placeholder='Email' className='w-[90%] h-20 mt-10 text-3xl border-2 border-black rounded-3xl text-center' />
         {!validation.email.status && (
@@ -184,7 +185,7 @@ const Login = () => {
           <p className=" text-red-600">{validation.signupError.message}</p>
         )}
         <p className='mt-5'>Register using <a className='text-blue-900 font-semibold cursor-pointer' onClick={signupHandle}>Signup</a></p>
-        <Link to={'/forgotpassword'} className='mt-3 underline font-semibold text-gray-600'>Forgot password?</Link>
+        <Link to={'/forgotPassword'} className='mt-3 underline font-semibold text-gray-600'>Forgot password?</Link>
         {/* <button className='w-[60%] h-20 mt-10 flex flex-row items-center pl-3 text-2xl font-medium border-2 border-black rounded-3xl text-center  hover:bg-black hover:text-white'><span className='w-[20%] h-20 flex items-center justify-center'><FcGoogle /></span>Login with google</button> */}
         <LoginWithGoogle />
       </div>

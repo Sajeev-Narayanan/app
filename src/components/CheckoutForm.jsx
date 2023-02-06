@@ -103,7 +103,7 @@ export default function CheckoutForm() {
 
                         <AlertDialogFooter>
 
-                            <Link to={"/userlanding"} className='text-lg w-32 text-center font-semibold border-2 border-black p-1 self-center rounded-full'>Home </Link>
+                            <Link to={"/home"} className='text-lg w-32 text-center font-semibold border-2 border-black p-1 self-center rounded-full'>Home </Link>
                         </AlertDialogFooter>
                     </AlertDialogContent>
                 </AlertDialogOverlay>

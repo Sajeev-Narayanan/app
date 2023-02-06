@@ -1,6 +1,9 @@
+import { Button } from '@chakra-ui/react';
 import React, { useMemo, useState } from 'react'
 import DataTable from 'react-data-table-component';
 import styled from 'styled-components';
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const TextField = styled.input`
 	height: 50px;
@@ -34,6 +37,7 @@ const ClearButton = styled.button`
 	
 `;
 
+
 const FilterComponent = ({ filterText, onFilter, onClear }) => (
     <>
         <TextField
@@ -51,8 +55,39 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
 );
 
 const TransactionTable = ({ data }) => {
+    const exportPDF = () => {
+        const unit = "pt";
+        const size = "A4"; // Use A1, A2, A3 or A4
+        const orientation = "portrait"; // portrait or landscape
 
-    console.log("datavannu...", data)
+        const marginLeft = 40;
+        const doc = new jsPDF(orientation, unit, size);
+
+        doc.setFontSize(15);
+
+        const title = "Transaction Report";
+        const headers = [["ManagerId", "UserId", "Estimate Amount", "Advance"]];
+
+        const datas = filteredItems.map((elt) => [
+            elt.managerId,
+            elt.userId,
+            elt.estimate.reduce((sum, amount) => { return (Number(sum) + Number(amount.price)) }, 0),
+            Math.floor(elt.estimate.reduce((sum, amount) => { return (Number(sum) + Number(amount.price)) }, 0) / 2)
+        ])
+
+        let content = {
+            startY: 50,
+            head: headers,
+            body: datas
+        };
+
+        doc.text(title, marginLeft, 40);
+        doc.autoTable(content);
+        doc.save("report.pdf")
+    }
+
+
+
 
     const columns = [
         {
@@ -69,7 +104,7 @@ const TransactionTable = ({ data }) => {
         },
         {
             name: 'Advance',
-            cell: row => Math.floor(row.estimate.reduce((sum, amount) => { return (Number(sum) + Number(amount.price)) / 2 }, 0))
+            cell: row => Math.floor(row.estimate.reduce((sum, amount) => { return (Number(sum) + Number(amount.price)) }, 0) / 2)
         },
     ];
 
@@ -78,7 +113,7 @@ const TransactionTable = ({ data }) => {
     const [filterText, setFilterText] = useState('');
     const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
     const filteredItems = data.filter(
-        item => item.email && item.email.toLowerCase().includes(filterText.toLowerCase()),
+        item => item.managerId && item.managerId.toLowerCase().includes(filterText.toLowerCase()),
     );
 
     const subHeaderComponentMemo = useMemo(() => {
@@ -98,17 +133,20 @@ const TransactionTable = ({ data }) => {
 
 
     return (
-        <div>
-            <DataTable
+
+        < div >
+            <Button onClick={() => exportPDF()}>Transaction Report</Button>
+            < DataTable
                 columns={columns}
-                data={data}
+                data={filteredItems}
                 pagination
                 paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
                 subHeader
                 subHeaderComponent={subHeaderComponentMemo}
 
             />
-        </div>
+        </div >
+
     )
 }
 

@@ -4,18 +4,18 @@ import Sidebar from '../../components/adminComponents/Sidebar'
 import Banner2 from '../../components/Banner2'
 import { currentToken } from '../../features/authSlice'
 
-const Adminlanding = () => {
+const AdminHome = () => {
   const token = useSelector(currentToken)
-  console.log("currenttoken",token);
+  console.log("currenttoken", token);
   return (
     <div className='flex'>
-          <Sidebar />
+      <Sidebar />
       <div className=''>
-        <Banner2 type="admin"/>
-          </div>
+        <Banner2 type="admin" />
+      </div>
     </div>
   )
 }
 
 
-export default Adminlanding
+export default AdminHome

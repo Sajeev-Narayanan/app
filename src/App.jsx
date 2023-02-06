@@ -13,7 +13,7 @@ import { userData2 } from './features/userAuthSlice';
 // import { userData } from './features/userGoogleAuthSlice';
 import UserRequireAuth from './features/UserRequireAuth';
 import userRequireAuth from './features/UserRequireAuth';
-import Adminlanding from './pages/adminPages/Adminlanding';
+import AdminHome from './pages/adminPages/AdminHome';
 import AdminLogin from './pages/adminPages/AdminLogin';
 import EventManagers from './pages/adminPages/EventManagers';
 import Requests from './pages/adminPages/Requests';
@@ -63,42 +63,38 @@ function App() {
         <Route index element={<SparklingStories />} />
 
 
-        <Route path="login" element={user != "" ? <Navigate to="/userlanding" /> : <Login />} />
-        <Route path="signup" element={user != "" ? <Navigate to="/userlanding" /> : <Signup />} />
-        <Route path="forgotpassword" element={user != "" ? <Navigate to="/userlanding" /> : <Forgotpassword />} />
-        <Route path="changePassword/:userId/:token" element={user != "" ? <Navigate to="/userlanding" /> : <ChangePassword />} />
+        <Route path="login" element={user != "" ? <Navigate to="/home" /> : <Login />} />
+        <Route path="signup" element={user != "" ? <Navigate to="/home" /> : <Signup />} />
+        <Route path="forgotPassword" element={user != "" ? <Navigate to="/home" /> : <Forgotpassword />} />
+        <Route path="changePassword/:userId/:token" element={user != "" ? <Navigate to="/home" /> : <ChangePassword />} />
         <Route element={<UserRequireAuth />}>
-          <Route path='userlanding' element={<UserLandingPage />} />
+          <Route path='home' element={<UserLandingPage />} />
           <Route path="providers/:service" element={<Providers />} />
           <Route path="provider/:id" element={<SingleProvider />} />
-          {/* <Route path="chat" element={<Chat />} /> */}
-          <Route path="profile" element={<Profile />} />
           <Route path="messages" element={<UserMessages />} />
           <Route path="chat" element={<Chat />} />
-          <Route path="/completion" element={<Completion />} />
-          <Route path="/payment" element={<Payment />} />
+          <Route path="completion" element={<Completion />} />
+          <Route path="payment" element={<Payment />} />
         </Route>
 
-        <Route path="providerlogin" element={manager != "" ? <Navigate to="/managersLanding" /> : <ProviderLogin />} />
-        <Route path="providersignup" element={manager != "" ? <Navigate to="/managersLanding" /> : <ProviderSignup />} />
-        <Route path="managersForgotPassword" element={manager != "" ? <Navigate to="/managersLanding" /> : <ManagersForgotPassword />} />
-        <Route path="managerChangePassword/:userId/:token" element={manager != "" ? <Navigate to="/managersLanding" /> : <ManagerChangePassword />} />
+        <Route path="providerLogin" element={manager != "" ? <Navigate to="/providerProfile" /> : <ProviderLogin />} />
+        <Route path="providerSignup" element={manager != "" ? <Navigate to="/providerProfile" /> : <ProviderSignup />} />
+        <Route path="managersForgotPassword" element={manager != "" ? <Navigate to="/providerProfile" /> : <ManagersForgotPassword />} />
+        <Route path="managerChangePassword/:userId/:token" element={manager != "" ? <Navigate to="/providerProfile" /> : <ManagerChangePassword />} />
         <Route element={<ManagersRequireAuth />}>
-          <Route path='managersLanding' element={<ManagersLanding />} />
-          <Route path="providerprofile" element={<ProviderProfile />} />
-          <Route path="editprofile" element={<EditProfile />} />
-          <Route path="messages" element={<Messages />} />
-          <Route path="providerchat" element={<ProviderChat />} />
+          {/* <Route path='managersLanding' element={<ManagersLanding />} /> */}
+          <Route path="providerProfile" element={<ProviderProfile />} />
+          <Route path="editProfile" element={<EditProfile />} />
           <Route path="managersChat" element={<ManagerChat />} />
         </Route>
 
 
-        <Route path="adminlogin" element={admin != "" ? <Navigate to="/adminlanding" /> : <AdminLogin />} />
+        <Route path="adminLogin" element={admin != "" ? <Navigate to="/adminLanding" /> : <AdminLogin />} />
         <Route element={<AdminRequireAuth />}>
-          <Route path="adminlanding" element={<Adminlanding />} />
-          <Route path="usermanagement" element={<UserManagement />} />
+          <Route path="adminLanding" element={<AdminHome />} />
+          <Route path="userManagement" element={<UserManagement />} />
           <Route path="requests" element={<Requests />} />
-          <Route path="eventmanagers" element={<EventManagers />} />
+          <Route path="eventManagers" element={<EventManagers />} />
           <Route path='transactions' element={<TransactionHistory />} />
         </Route>
 

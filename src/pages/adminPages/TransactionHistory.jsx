@@ -7,7 +7,7 @@ import axios from '../../config/axios'
 
 const TransactionHistory = () => {
     const [data, setdata] = useState([]);
-    const [load, setload] = useState(false);
+    // const [load, setload] = useState(false);
 
     useEffect(() => {
         try {
@@ -25,7 +25,7 @@ const TransactionHistory = () => {
             alert("SOMETHING WEONG!!!!!!!!!!!!!")
         }
 
-    }, [load]);
+    }, []);
 
 
 
@@ -34,7 +34,7 @@ const TransactionHistory = () => {
             <Sidebar type="transaction" />
             <div className='w-full h-screen'>
                 <div className='max-w-[1200px] mx-auto bg-white mt-20 rounded-3xl p-8'>
-                    {data && <TransactionTable data={data} />}
+                    {data.length > 0 && <TransactionTable data={data} />}
 
 
                 </div>

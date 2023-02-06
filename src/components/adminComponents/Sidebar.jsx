@@ -12,7 +12,7 @@ const Sidebar = (props) => {
 
   const handleLogout = () => {
     dispatch(authChange({ adminName: "", accessToken: "", refreshToken: "" }))
-    navigate('/adminlogin')
+    navigate('/adminLogin')
   }
 
   return (
@@ -29,41 +29,41 @@ const Sidebar = (props) => {
         />
         <div className="flex gap-x-4 items-center">
           <img
-            src="./src/assets/logo.png"
+            src="logo.png"
             className={`cursor-pointer duration-500 ${open && "rotate-[360deg]"
               }`}
           />
-          <h1
+          {/* <h1
             className={`text-white origin-left font-medium text-xl duration-200 ${!open && "scale-0"
               }`}
           >
             LOGO
-          </h1>
+          </h1> */}
         </div>
         <ul className="pt-6">
 
-          <li className={`${props.type == "user" && "bg-gray-700"} flex  rounded-md p-2 cursor-pointer hover:bg-gray-700  items-center gap-x-4 mb-5`}>
+          <li onClick={() => { navigate('/userManagement') }} className={`${props.type == "user" && "bg-gray-700"} flex  rounded-md p-2 cursor-pointer hover:bg-gray-700  items-center gap-x-4 mb-5`}>
             <FaUsersCog className="text-3xl text-white" />
             <span className={`${!open && "hidden"} origin-left duration-200`}>
-              <h1 onClick={() => { navigate('/usermanagement') }} className="text-white text-xl">User Management</h1>
+              <h1 className="text-white text-xl">User Management</h1>
             </span>
           </li>
-          <li className={`${props.type == "req" && "bg-gray-700"} flex  rounded-md p-2 cursor-pointer hover:bg-gray-700  items-center gap-x-4 mb-5`}>
+          <li onClick={() => { navigate('/requests') }} className={`${props.type == "req" && "bg-gray-700"} flex  rounded-md p-2 cursor-pointer hover:bg-gray-700  items-center gap-x-4 mb-5`}>
             <VscRequestChanges className="text-3xl text-white" />
             <span className={`${!open && "hidden"} origin-left duration-200`}>
-              <h1 onClick={() => { navigate('/requests') }} className="text-white text-xl">Requests</h1>
+              <h1 className="text-white text-xl">Requests</h1>
             </span>
           </li>
-          <li className={`${props.type == "event" && "bg-gray-700"} flex  rounded-md p-2 cursor-pointer hover:bg-gray-700  items-center gap-x-4 mb-5`}>
+          <li onClick={() => { navigate('/eventManagers') }} className={`${props.type == "event" && "bg-gray-700"} flex  rounded-md p-2 cursor-pointer hover:bg-gray-700  items-center gap-x-4 mb-5`}>
             <FaChessRook className="text-3xl text-white" />
             <span className={`${!open && "hidden"} origin-left duration-200`}>
-              <h1 onClick={() => { navigate('/eventmanagers') }} className="text-white text-xl">Service providers</h1>
+              <h1 className="text-white text-xl">Event Managers</h1>
             </span>
           </li>
-          <li className={`${props.type == "transaction" && "bg-gray-700"} flex  rounded-md p-2 cursor-pointer hover:bg-gray-700  items-center gap-x-4 mb-5`}>
+          <li onClick={() => { navigate('/transactions') }} className={`${props.type == "transaction" && "bg-gray-700"} flex  rounded-md p-2 cursor-pointer hover:bg-gray-700  items-center gap-x-4 mb-5`}>
             <BiTransfer className="text-3xl text-white" />
             <span className={`${!open && "hidden"} origin-left duration-200`}>
-              <h1 onClick={() => { navigate('/transactions') }} className="text-white text-xl">Transaction History</h1>
+              <h1 className="text-white text-xl">Transaction History</h1>
             </span>
           </li>
 

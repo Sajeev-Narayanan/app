@@ -10,6 +10,7 @@ const ProviderSignup = () => {
   const addServiceClose = () => setOtpmodal(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [passwordType, setPasswordType] = useState("password");
+  const [imageError, setImageError] = useState(false);
 
   const passwordTypeChange = () => {
     if (!passwordVisible) {
@@ -24,9 +25,9 @@ const ProviderSignup = () => {
 
   const navigate = useNavigate()
   const loginHandle = () => {
-  navigate('/providerlogin')
+    navigate('/providerLogin')
   }
-  
+
   const [services, setServices] = useState([]);
   const [place, setPlace] = useState([]);
   const [providerData, setProviderData] = useState({
@@ -35,8 +36,8 @@ const ProviderSignup = () => {
     phone: "",
     email: "",
     password: "",
-    
-    
+
+
   });
   const [image, setImage] = useState("")
   // console.log(providerData.certificate);
@@ -156,7 +157,7 @@ const ProviderSignup = () => {
 
 
   const servicesCheck = () => {
-    
+
     if (services == "") {
       setValidation((prevState) => ({
         ...prevState,
@@ -182,7 +183,7 @@ const ProviderSignup = () => {
 
 
   const placeCheck = () => {
-    
+
     if (place == "") {
       setValidation((prevState) => ({
         ...prevState,
@@ -286,84 +287,99 @@ const ProviderSignup = () => {
     }
   };
 
-  const signupHandle = () => { 
+  const signupHandle = () => {
 
-    
-    
+    if (emailCheck(), passwordCheck(), PhoneCheck(), descriptionCheck(), placeCheck(), servicesCheck(), nameCheck()) {
+      if (image == "") {
+        setImageError(true)
+      } else {
+        setImageError(false);
+        const data = new FormData();
+        data.append("file", image);
+        data.append("upload_preset", "SparklingStories");
+        data.append("cloud_name", "djrzqc3nc");
 
-    const data = new FormData();
-    data.append("file", image);
-    data.append("upload_preset", "SparklingStories");
-    data.append("cloud_name", "djrzqc3nc");
-
-    fetch("https://api.cloudinary.com/v1_1/djrzqc3nc/image/upload", {
-      method: "post",
-      body: data,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-       
-        const certificateUrl = data.url;
-        
-
-
-        fetch(`http://localhost:8000/provider/signupEmail`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            certificateUrl,
-            providerData,
-            services,
-            place
-            
-          }),   
+        fetch("https://api.cloudinary.com/v1_1/djrzqc3nc/image/upload", {
+          method: "post",
+          body: data,
         })
           .then((res) => res.json())
           .then((data) => {
-            console.log(data);
 
-            if (data.message === "success") {
-              setOtpmodal(true)
+            const certificateUrl = data.url;
 
-              setValidation((prevState) => ({
-                ...prevState,
-                signuoError: {
-                  value: true,
-                  message: "",
-                },
-              }));
-              return true;
 
-            } else {
-              setValidation((prevState) => ({
-                ...prevState,
-                signuoError: {
-                  value: false,
-                  message: "Something wrong happened",
-                },
-              }));
-              return false;
-            }
-            
-            // open.updateEvent();
-            // SetDesc("");
-          });
-      })
-      .catch((err) => console.log(err));
+
+            fetch(`http://localhost:8000/provider/signupEmail`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                certificateUrl,
+                providerData,
+                services,
+                place
+
+              }),
+            })
+              .then((res) => res.json())
+              .then((data) => {
+                console.log(data);
+
+                if (data.message === "success") {
+                  setOtpmodal(true)
+
+                  setValidation((prevState) => ({
+                    ...prevState,
+                    signuoError: {
+                      value: true,
+                      message: "",
+                    },
+                  }));
+                  return true;
+
+                } else {
+                  setValidation((prevState) => ({
+                    ...prevState,
+                    signuoError: {
+                      value: false,
+                      message: "Company already exists",
+                    },
+                  }));
+                  return false;
+                }
+
+                // open.updateEvent();
+                // SetDesc("");
+              });
+          })
+          .catch((err) => {
+            setValidation((prevState) => ({
+              ...prevState,
+              signuoError: {
+                value: false,
+                message: "Signup failed!"
+              },
+            }));
+          })
+      }
+    } else {
+
+    }
   }
 
 
-  
+
 
 
 
 
   return (
     <div className='w-full h-full grid lg:grid-cols-3 md:grid-cols-5 bg-white'>
-    <div className='md:col-span-2 lg:col-span-1 flex flex-col items-center justify-center mb-20'>
-        <h1 className='font-Viaoda text-7xl mb-10 mt-20'>Signup</h1>
+      <div className='md:col-span-2 lg:col-span-1 flex flex-col items-center justify-center mb-20'>
+        <img src="logo.png" alt="logo" width={330} />
+        <h1 className='font-Viaoda text-7xl mb-10'>Signup</h1>
         <input
           type="text"
           name='companyName'
@@ -374,8 +390,8 @@ const ProviderSignup = () => {
           className='w-[90%] h-20 mt-10 text-3xl border-2 border-black rounded-3xl text-center'
         />
         {!validation.companyName.status && (
-        <p className=" text-red-600">{validation.companyName.message}</p>
-      )}
+          <p className=" text-red-600">{validation.companyName.message}</p>
+        )}
         <textarea
           name="description"
           placeholder='Description'
@@ -384,17 +400,17 @@ const ProviderSignup = () => {
           value={providerData.description}
           className='w-[90%] max-h-40 mt-10 text-3xl border-2 border-black rounded-3xl text-center show-scrollbar'></textarea>
         {!validation.description.status && (
-        <p className=" text-red-600">{validation.description.message}</p>
+          <p className=" text-red-600">{validation.description.message}</p>
         )}
         <div className='w-[90%] mt-10 text-3xl border-2 border-black rounded-3xl text-center flex flex-col items-center justify-center break-words'>
           <div className=' w-[90%] break-words'>{services.join(' , ')}</div>
-          <MdBackspace onClick={backService} className='self-end mr-2'/>
-        <select
+          <MdBackspace onClick={backService} className='self-end mr-2' />
+          <select
             name="services"
             value=""
-          onChange={selectService}
-          onBlur={servicesCheck}
-          className='h-12 bottom-0 border-none  w-full text-center rounded-3xl'>
+            onChange={selectService}
+            onBlur={servicesCheck}
+            className='h-12 bottom-0 border-none  w-full text-center rounded-3xl'>
             <option value="#">--Select Services--</option>
             <option value="Wedding planning">Wedding planning</option>
             <option value="Personal events">Personal events</option>
@@ -409,39 +425,39 @@ const ProviderSignup = () => {
             <option value="Decoration">Decoration</option>
             <option value="Security">Security</option>
           </select>
-          </div>
+        </div>
         {!validation.services.status && (
-        <p className=" text-red-600">{validation.services.message}</p>
+          <p className=" text-red-600">{validation.services.message}</p>
         )}
         <div className='w-[90%] mt-10 text-3xl border-2 border-black rounded-3xl text-center flex flex-col items-center justify-center break-words'>
-        <div className=' w-[90%] break-words'>{place.join(' , ')}</div>
-          <MdBackspace onClick={backPlace} className='self-end mr-2'/>
-        <select
-          name="place"
-          value=""
-          onChange={selectPlace}
-          onBlur={placeCheck}
-          className='h-12 bottom-0 border-none  w-full text-center rounded-3xl'>
-                              <option value="#">-- Select Places --</option>
-                              <option value="Alappuzha" >Alappuzha</option>
-                              <option value="Ernakulam">Ernakulam</option>
-                              <option value="Idukki">Idukki</option>
-                              <option value="Kannur">Kannur</option>
-                              <option value="Kasaragod">Kasaragod</option>
-                              <option value="Kollam">Kollam</option>
-                              <option value="Kottayam">Kottayam</option>
-                              <option value="Kozhikode">Kozhikode</option>
-                              <option value="Malappuram">Malappuram</option>
-                              <option value="Palakkad">Palakkad</option>
-                              <option value="Pathanamthitta">Pathanamthitta</option>
-                              <option value="Thiruvananthapuram">Thiruvananthapuram</option>
-                              <option value="Thrissur">Thrissur</option>
-                              <option value="Wayanad">Wayanad</option>
+          <div className=' w-[90%] break-words'>{place.join(' , ')}</div>
+          <MdBackspace onClick={backPlace} className='self-end mr-2' />
+          <select
+            name="place"
+            value=""
+            onChange={selectPlace}
+            onBlur={placeCheck}
+            className='h-12 bottom-0 border-none  w-full text-center rounded-3xl'>
+            <option value="#">-- Select Places --</option>
+            <option value="Alappuzha" >Alappuzha</option>
+            <option value="Ernakulam">Ernakulam</option>
+            <option value="Idukki">Idukki</option>
+            <option value="Kannur">Kannur</option>
+            <option value="Kasaragod">Kasaragod</option>
+            <option value="Kollam">Kollam</option>
+            <option value="Kottayam">Kottayam</option>
+            <option value="Kozhikode">Kozhikode</option>
+            <option value="Malappuram">Malappuram</option>
+            <option value="Palakkad">Palakkad</option>
+            <option value="Pathanamthitta">Pathanamthitta</option>
+            <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+            <option value="Thrissur">Thrissur</option>
+            <option value="Wayanad">Wayanad</option>
           </select>
-          </div>
+        </div>
         {!validation.place.status && (
-        <p className=" text-red-600">{validation.place.message}</p>
-      )}
+          <p className=" text-red-600">{validation.place.message}</p>
+        )}
         <input
           type="text"
           name='phone'
@@ -452,8 +468,8 @@ const ProviderSignup = () => {
           className='w-[90%] h-20 mt-10 text-3xl border-2 border-black rounded-3xl text-center'
         />
         {!validation.phone.status && (
-        <p className=" text-red-600">{validation.phone.message}</p>
-      )}
+          <p className=" text-red-600">{validation.phone.message}</p>
+        )}
         <input
           type="email"
           name='email'
@@ -464,8 +480,8 @@ const ProviderSignup = () => {
           className='w-[90%] h-20 mt-10 text-3xl border-2 border-black rounded-3xl text-center'
         />
         {!validation.email.status && (
-        <p className=" text-red-600">{validation.email.message}</p>
-      )}
+          <p className=" text-red-600">{validation.email.message}</p>
+        )}
         <input
           type={passwordType}
           name='password'
@@ -476,7 +492,7 @@ const ProviderSignup = () => {
           className='w-[90%] h-20 mt-10 text-3xl border-2 border-black rounded-3xl text-center'
         />
         <p className="relative w-full ">
-          <i className="absolute right-10 bottom-6 bg-white z-10 pl-2" onClick={passwordTypeChange}>
+          <i className="absolute right-10 bottom-6 z-10 pl-2" onClick={passwordTypeChange}>
             {passwordVisible ? (
               <FiEye size={38} opacity={0.6} />
             ) : (
@@ -485,31 +501,32 @@ const ProviderSignup = () => {
           </i>
         </p>
         {!validation.password.status && (
-        <p className=" text-red-600">{validation.password.message}</p>
-      )}
+          <p className=" text-red-600">{validation.password.message}</p>
+        )}
         <input
           type="file"
           name='certificate'
           value={providerData.certificate}
-          onChange={(e)=>setImage(e.target.files[0])}
+          onChange={(e) => setImage(e.target.files[0])}
           className='w-[90%] h-20 mt-10 text-3xl p-4 border-2 border-black rounded-3xl text-center'
         />
         <label htmlFor="file">Gov.Approved Certificate</label>
-        
+        {imageError && <p className='text-red-500'>Select one image</p>}
+
 
         <button onClick={signupHandle} className='w-[60%] h-20 mt-10 text-3xl font-semibold border-2 border-black rounded-3xl text-center'>Signup</button>
         {!validation.signuoError.status && (
-        <p className=" text-red-600">{validation.signuoError.message}</p>
-      )}
+          <p className=" text-red-600">{validation.signuoError.message}</p>
+        )}
         <p className='mt-5'>Already a member?<a className='text-blue-900 font-semibold cursor-pointer' onClick={loginHandle}>Login</a></p>
-    </div>
-    <div className='hidden md:flex items-center flex-col md:col-span-3 lg:col-span-2'>
+      </div>
+      <div className='hidden md:flex items-center flex-col md:col-span-3 lg:col-span-2'>
         <img src="login.gif" alt="LOGIN" className='w-[100%] top-1 sticky' />
         <h1 className='font-Viaoda text-7xl text-gray-500 absolute top-2/3 top-0 bottom-64 sticky'>Make everything easy</h1>
-    </div>
-      <OtpModal onClose={addServiceClose} visible={Optmodal} phone={ providerData.phone} />
+      </div>
+      <OtpModal onClose={addServiceClose} visible={Optmodal} phone={providerData.phone} />
 
-</div>
+    </div >
   )
 }
 

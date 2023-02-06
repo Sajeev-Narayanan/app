@@ -6,13 +6,13 @@ import { managersData } from "./managersAuthSlice";
 
 const ManagersRequireAuth = () => {
   const manager = useSelector(managersData)
-    
+
   const location = useLocation();
 
-  return  manager !="" ? (
+  return manager != "" ? (
     <Outlet />
-  ):(
-    <Navigate to="/providerlogin" state={{ from: location }} replace />
+  ) : (
+    <Navigate to="/providerLogin" state={{ from: location }} replace />
   );
 };
 export default ManagersRequireAuth;
