@@ -11,37 +11,35 @@ const EventManagers = () => {
 
   useEffect(() => {
     try {
-  
+
       axios.get("/admin/aprovedManagers").then((response) => {
-        
+
         if (response.status === 200) {
-         
+
           setdata(response.data.data)
-          console.log(data)
         } else {
-          console.log("error");
+          alert("server error")
         }
       })
     } catch (error) {
-      console.log(error);
-      
+      alert("server error")
+
     }
-    
+
   }, [load]);
 
   return (
     <div className='flex'>
-          <Sidebar type="event" />
-          <div className='w-full h-screen'>
-              <div className='max-w-[1200px] mx-auto bg-white mt-20 rounded-3xl p-8'>
+      <Sidebar type="event" />
+      <div className='w-full h-screen'>
+        <div className='max-w-[1200px] mx-auto bg-white mt-20 rounded-3xl p-8'>
           <EventManagersTable data={data} load={load} change={setload} />
-                 
-              </div>
-          </div>
+
+        </div>
+      </div>
     </div>
   )
 }
 
 export default EventManagers
 
- 

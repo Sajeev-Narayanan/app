@@ -40,7 +40,6 @@ const ProviderSignup = () => {
 
   });
   const [image, setImage] = useState("")
-  // console.log(providerData.certificate);
 
   const [validation, setValidation] = useState({
     companyName: {
@@ -219,7 +218,6 @@ const ProviderSignup = () => {
           message: "is this really your email ?",
         },
       }));
-      // console.log("email false");
 
       return false;
     } else {
@@ -247,7 +245,6 @@ const ProviderSignup = () => {
           message: "is this really your phone ?",
         },
       }));
-      // console.log("phone false");
 
       return false;
     } else {
@@ -273,7 +270,6 @@ const ProviderSignup = () => {
           message: "password  must be more than 8 character",
         },
       }));
-      // console.log("password false");
       return false;
     } else {
       setValidation((prevState) => ({
@@ -325,7 +321,6 @@ const ProviderSignup = () => {
             })
               .then((res) => res.json())
               .then((data) => {
-                console.log(data);
 
                 if (data.message === "success") {
                   setOtpmodal(true)

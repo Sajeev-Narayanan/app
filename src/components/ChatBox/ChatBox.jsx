@@ -6,6 +6,9 @@ import "./ChatBox.css";
 import { format } from "timeago.js";
 import InputEmoji from 'react-input-emoji'
 import axios from "../../config/axios";
+import instance from "../../config/instance";
+import userAxios from "../../config/userAxios";
+import managerAxios from "../../config/managerAxios";
 
 const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage, type, addEstimate, showEstimate, setReceiver }) => {
     const [userData, setUserData] = useState(null);
@@ -23,17 +26,17 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage, type, add
         const getUserData = async () => {
             if (type == "manager") {
                 try {
-                    const { data } = await axios.get(`/provider/chatUsers/${user}`);
+                    const { data } = await managerAxios.get(`/provider/chatUsers/${user}`);
                     setUserData(data);
                 } catch (error) {
-                    console.log(error);
+                    alert("No chat are available")
                 }
             } else {
                 try {
-                    const { data } = await axios.get(`/chatManagers/${user}`);
+                    const { data } = await userAxios.get(`/chatManagers/${user}`);
                     setUserData(data);
                 } catch (error) {
-                    console.log(error);
+                    alert("No chat are available")
                 }
             }
         };
@@ -45,10 +48,9 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage, type, add
     useEffect(() => {
         const fetchMessages = async () => {
             try {
-                const { data } = await axios.get(`/message/${chat._id}`);
+                const { data } = await userAxios.get(`/message/${chat._id}`);
                 setMessages(data);
             } catch (error) {
-                console.log(error);
             }
         };
 
@@ -76,19 +78,18 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage, type, add
         setSendMessage({ ...message, receiverId })
         // send message to database
         try {
-            const { data } = await axios.post('/message/', message);
+            const { data } = await userAxios.post('/message/', message);
             setMessages([...messages, data]);
             setNewMessage("");
         }
         catch
         {
-            console.log("error")
+            alert("SOMETHING WRONG!!!!!!!!!!!!!")
         }
     }
 
     // Receive Message from parent component
     useEffect(() => {
-        console.log("Message Arrived: ", receivedMessage)
         if (receivedMessage !== null && receivedMessage.chatId === chat._id) {
             setMessages([...messages, receivedMessage]);
         }

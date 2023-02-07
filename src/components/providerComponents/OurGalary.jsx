@@ -13,50 +13,51 @@ import {
 } from '@chakra-ui/react'
 import { managersData } from '../../features/managersAuthSlice'
 import { useSelector } from 'react-redux'
+import managerAxios from '../../config/managerAxios'
 
 
 const OurGalary = (props) => {
-    
-    const { isOpen, onOpen, onClose } = useDisclosure()
-    const cancelRef = React.useRef()
-    const managers = useSelector(managersData)
 
-    const deleteHandler = async() => {
-        try {
-            const response = await axios.post('/provider/removeImage', { imageUrl:props.image, managers })
-            if (response.status === 201) {
-             props.delete==false? props.isDelete(true):props.isDelete(false)
-            toast({
-              position: "top",
-              variant: 'left-accent',
-              status: 'success',
-              isClosable: true,
-              title: 'Image removed successfully',
-            
-            })
-            
-          } else {
-            
-            toast({
-              position: "top",
-              variant: 'left-accent',
-              status: 'error',
-              isClosable: true,
-              title: 'Image removing failed',
-            
-            })
-          }
-        } catch (error) {
-            
-        }
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const cancelRef = React.useRef()
+  const managers = useSelector(managersData)
+
+  const deleteHandler = async () => {
+    try {
+      const response = await managerAxios.post('/provider/removeImage', { imageUrl: props.image, managers })
+      if (response.status === 201) {
+        props.delete == false ? props.isDelete(true) : props.isDelete(false)
+        toast({
+          position: "top",
+          variant: 'left-accent',
+          status: 'success',
+          isClosable: true,
+          title: 'Image removed successfully',
+
+        })
+
+      } else {
+
+        toast({
+          position: "top",
+          variant: 'left-accent',
+          status: 'error',
+          isClosable: true,
+          title: 'Image removing failed',
+
+        })
       }
+    } catch (error) {
+
+    }
+  }
 
   return (
     <div className='mb-7 p-2 lg:w-[500px] relative text-white lg:h-[400px] md:w-[370px] md:h-[270px] w-[330px] h-[250px] rounded-2xl shadow-lg shadow-black flex items-center justify-center bg-black'>
-     <AiFillCloseCircle onClick={onOpen} className='text-white text-3xl absolute top-4 right-4 hover:scale-110 hover:text-red-500'/>
-          <img className='max-h-[90%] hover:scale-110 hover:duration-300' src={props.image} alt="images" />
+      <AiFillCloseCircle onClick={onOpen} className='text-white text-3xl absolute top-4 right-4 hover:scale-110 hover:text-red-500' />
+      <img className='max-h-[90%] hover:scale-110 hover:duration-300' src={props.image} alt="images" />
 
-          <AlertDialog
+      <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
         onClose={onClose}
@@ -75,7 +76,7 @@ const OurGalary = (props) => {
               <Button ref={cancelRef} onClick={onClose}>
                 Cancel
               </Button>
-                          <Button colorScheme='red' onClick={() => { deleteHandler(); onClose() }} ml={3}>
+              <Button colorScheme='red' onClick={() => { deleteHandler(); onClose() }} ml={3}>
                 Delete
               </Button>
             </AlertDialogFooter>

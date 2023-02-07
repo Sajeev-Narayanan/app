@@ -6,9 +6,9 @@ import axios from '../../config/axios'
 import { useToast } from '@chakra-ui/toast';
 import { Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from '@chakra-ui/react';
 import { MdBackspace } from 'react-icons/md';
+import managerAxios from '../../config/managerAxios';
 
 const CreateEstimateModal = ({ visible, onClose, userId, managerId }) => {
-    // console.log(inService);
     const [data, setData] = useState("");
     const [service, setService] = useState("");
     const [error, setError] = useState("");
@@ -30,11 +30,10 @@ const CreateEstimateModal = ({ visible, onClose, userId, managerId }) => {
     }
 
     useEffect(() => {
-        axios.get(`/provider/estimateDetails/${userId}/${managerId}`).then((res) => {
+        managerAxios.get(`/provider/estimateDetails/${userId}/${managerId}`).then((res) => {
             setPrevEstimate(res.data)
-            console.log("############", res.data)
         })
-    }, [userId]);
+    }, [userId, visible]);
 
 
     const addHandler = () => {
@@ -45,7 +44,6 @@ const CreateEstimateModal = ({ visible, onClose, userId, managerId }) => {
                 return false
             }
         })
-        console.log(added, "aadddeeeedddd")
 
         if (added == false) {
             setEstimate(prevState => [...prevState, { service, price }])
@@ -60,7 +58,7 @@ const CreateEstimateModal = ({ visible, onClose, userId, managerId }) => {
 
     const saveHandler = async () => {
         if (estimate.length > 0) {
-            const response = await axios.post('/provider/addEstimate', { userId, managerId, estimate })
+            const response = await managerAxios.post('/provider/addEstimate', { userId, managerId, estimate })
             if (response.status === 201) {
                 toast({
                     position: "top",
@@ -70,6 +68,7 @@ const CreateEstimateModal = ({ visible, onClose, userId, managerId }) => {
                     title: 'Estimate added successfully',
 
                 })
+                setEstimate([])
                 onClose()
             } else {
                 setError("select one")
@@ -89,7 +88,7 @@ const CreateEstimateModal = ({ visible, onClose, userId, managerId }) => {
 
     if (!visible) return null;
     return (
-        <div id='container' onClick={handleOnClose} className='z-10 fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center'>
+        <div id='container' onClick={handleOnClose} className='z-10 fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center overflow-y-scroll no-scrollbar pt-48'>
 
             <div className='bg-white w-[700px] pb-5 min-h-[500px] flex flex-col rounded-3xl m-2'>
                 <div className='flex flex-row-reverse text-4xl p-4 border-b-2 border-black'>
@@ -102,12 +101,11 @@ const CreateEstimateModal = ({ visible, onClose, userId, managerId }) => {
                             < div className='mb-2 border-b-2'>
                                 <p className='text-lg font-semibold'>EstimateId : <span className='text-base font-normal'>{e._id}</span></p>
                                 <p className='text-lg font-semibold'>Amound : <span className='text-base font-normal'>{e.estimate.reduce((sum, amount) => {
-                                    console.log("sum", sum, "amount", amount);
                                     return (Number(sum) + Number(amount.price))
                                 }, 0)}
 
                                 </span ></p>
-                                < p className='text-lg font-semibold' > Advance : <span className='text-base font-normal'>{Math.floor(e.estimate.reduce((sum, amount) => { return (Number(sum) + Number(amount.price)) / 2 }, 0))}</span ></p>
+                                < p className='text-lg font-semibold' > Advance : <span className='text-base font-normal'>{Math.floor(e.estimate.reduce((sum, amount) => { return (Number(sum) + Number(amount.price)) }, 0) / 2)}</span ></p>
                                 <p className='text-lg font-semibold'>Payment : {e.paid == true ? < span className='text-base font-normal'>Completed</span> : < span className='text-base font-normal'>Pending...</span>}</p>
                             </div>
                         ))}

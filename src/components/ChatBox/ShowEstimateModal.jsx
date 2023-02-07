@@ -9,6 +9,7 @@ import useSWR from "swr";
 import { MdBackspace } from 'react-icons/md';
 import { paymentChange } from '../../features/paymentSlice';
 import { useNavigate } from 'react-router-dom';
+import userAxios from '../../config/userAxios';
 
 const ShowEstimateModal = ({ visible, onClose, userId, managerId }) => {
     // const [total, setTotal] = useState(0);
@@ -26,7 +27,7 @@ const ShowEstimateModal = ({ visible, onClose, userId, managerId }) => {
     useEffect(() => {
         // setTotal(0)
         try {
-            axios.post('/estimateData', { userId, managerId }).then((response) => {
+            userAxios.post('/estimateData', { userId, managerId }).then((response) => {
 
                 if (response.status === 201) {
                     setEstimate(response.data)
@@ -54,10 +55,9 @@ const ShowEstimateModal = ({ visible, onClose, userId, managerId }) => {
             })
             onClose()
         }
-    }, [managerId]);
+    }, [managerId, visible]);
 
     const payHandler = async (amount, estimateId) => {
-        console.log(estimateId, amount, "??????????????")
         await dispatch(paymentChange({ amount, estimateId }))
         navigate("/payment")
     }

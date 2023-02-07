@@ -9,6 +9,7 @@ import Navebar from '../../components/providerComponents/Navbar'
 import axios from '../../config/axios'
 import { managersData } from '../../features/managersAuthSlice'
 import BeatLoader from "react-spinners/BeatLoader";
+import managerAxios from '../../config/managerAxios'
 
 const EditProfile = () => {
   const managers = useSelector(managersData)
@@ -41,7 +42,7 @@ const EditProfile = () => {
       status: true,
       message: "",
     },
-    
+
     signupError: {
       status: true,
       message: "",
@@ -107,7 +108,7 @@ const EditProfile = () => {
   };
 
   const placeCheck = () => {
-    
+
     if (place == "") {
       setValidation((prevState) => ({
         ...prevState,
@@ -130,12 +131,11 @@ const EditProfile = () => {
   };
 
 
-   
+
   useEffect(() => {
     try {
-      axios.get(`/provider/editProfile?managers=${managers}`).then((response) => {
+      managerAxios.get(`/provider/editProfile?managers=${managers}`).then((response) => {
         if (response.status === 201) {
-          console.log(response.data.profile);
           // setProfile(response.data.profile)
           setName(response.data.profile.companyname)
           setDescription(response.data.profile.description)
@@ -147,7 +147,7 @@ const EditProfile = () => {
         }
       })
     } catch (error) {
-      console.log(error);
+      alert("server error")
     }
   }, []);
 
@@ -166,7 +166,7 @@ const EditProfile = () => {
       })
         .then((res) => res.json())
         .then((data) => {
-       
+
           const coverPhotoUrl = data.url;
 
           const image = new FormData();
@@ -180,12 +180,11 @@ const EditProfile = () => {
           })
             .then((res) => res.json())
             .then((result) => {
-       
-              const profilePhotoUrl = result.url;
-              const values = {email:managers,name,description,place,coverPhotoUrl,profilePhotoUrl}
 
-              const response = axios.put("/provider/editProfile", values).then((response) => {
-                console.log(response);
+              const profilePhotoUrl = result.url;
+              const values = { email: managers, name, description, place, coverPhotoUrl, profilePhotoUrl }
+
+              const response = managerAxios.put("/provider/editProfile", values).then((response) => {
                 if (response.status === 201) {
                   toast({
                     position: "top",
@@ -193,7 +192,7 @@ const EditProfile = () => {
                     status: 'success',
                     isClosable: true,
                     title: 'Profile updated successfully',
-                
+
                   })
                   setLoad(false)
                 } else {
@@ -203,116 +202,114 @@ const EditProfile = () => {
                     status: 'error',
                     isClosable: true,
                     title: 'Profile updation failed',
-                
+
                   })
                   setLoad(false)
                 }
               })
-              
+
             })
         })
     } else {
       setLoad(true)
-      console.log("NOOOOOO IMAGES SELECTED!!!!!!!!!!!");
-      const values = {email:managers,name,description,place}
+      const values = { email: managers, name, description, place }
 
-      const response = axios.put("/provider/editProfile", values)
+      const response = managerAxios.put("/provider/editProfile", values)
         .then((response) => {
-                console.log(response);
-                if (response.status === 201) {
-                  toast({
-                    position: "top",
-                    variant: 'left-accent',
-                    status: 'success',
-                    isClosable: true,
-                    title: 'Profile updated successfully',
-                
-                  })
-                  setLoad(false)
-                } else {
-                  toast({
-                    position: "top",
-                    variant: 'left-accent',
-                    status: 'error',
-                    isClosable: true,
-                    title: 'Profile updation failed',
-                
-                  })
-                  setLoad(false)
-                }
-              })
+          if (response.status === 201) {
+            toast({
+              position: "top",
+              variant: 'left-accent',
+              status: 'success',
+              isClosable: true,
+              title: 'Profile updated successfully',
+
+            })
+            setLoad(false)
+          } else {
+            toast({
+              position: "top",
+              variant: 'left-accent',
+              status: 'error',
+              isClosable: true,
+              title: 'Profile updation failed',
+
+            })
+            setLoad(false)
+          }
+        })
     }
   }
 
   return (
     <div>
-          <Navebar />
-          <div className='w-full'>
-              <div className='max-w-[1300px]  mx-auto  mt-8 rounded-2xl flex flex-col'>
-                  <AddCoverPhoto photo={coverPhoto} setCover={setCover} cover={cover} change={setCoverPhoto} />
-          <AddDP photo={ profilePhoto} setDp={setDp} dp={dp} change={setProfilePhoto} />
-                  
-                  <div className='mx-auto flex flex-col items-center justify-center mt-10 gap-6'>
-                      <div>
-                      <label htmlFor="companyName" className='ml-6'>Company Name</label>
-              <input type="text" value={name} onBlur={nameCheck} onChange={(e)=>setName(e.target.value)} className='border-2 border-black rounded-3xl h-16 w-full text-lg font-medium p-4' />
+      <Navebar />
+      <div className='w-full'>
+        <div className='max-w-[1300px]  mx-auto  mt-8 rounded-2xl flex flex-col'>
+          <AddCoverPhoto photo={coverPhoto} setCover={setCover} cover={cover} change={setCoverPhoto} />
+          <AddDP photo={profilePhoto} setDp={setDp} dp={dp} change={setProfilePhoto} />
+
+          <div className='mx-auto flex flex-col items-center justify-center mt-10 gap-6'>
+            <div>
+              <label htmlFor="companyName" className='ml-6'>Company Name</label>
+              <input type="text" value={name} onBlur={nameCheck} onChange={(e) => setName(e.target.value)} className='border-2 border-black rounded-3xl h-16 w-full text-lg font-medium p-4' />
               {!validation.companyName.status && (
-        <p className=" text-red-600">{validation.companyName.message}</p>
-      )}
-                      </div>
-                      <div>
-                      <label htmlFor="companyName" className='ml-6'>Description</label>
-              <textarea name="description" value={description} onChange={(e)=> setDescription(e.target.value)} onBlur={descriptionCheck} className='border-2 border-black rounded-3xl w-full text-lg font-medium p-4' id="" cols="30" rows="10"></textarea>
+                <p className=" text-red-600">{validation.companyName.message}</p>
+              )}
+            </div>
+            <div>
+              <label htmlFor="companyName" className='ml-6'>Description</label>
+              <textarea name="description" value={description} onChange={(e) => setDescription(e.target.value)} onBlur={descriptionCheck} className='border-2 border-black rounded-3xl w-full text-lg font-medium p-4' id="" cols="30" rows="10"></textarea>
               {!validation.description.status && (
-        <p className=" text-red-600">{validation.description.message}</p>
-        )}
-                      </div>
-                      <div className='w-full '>
-                      <label htmlFor="companyName" className='ml-6'>Location</label>
-                          
-                      <div className='w-full  text-xl bg-white border-2 border-black rounded-3xl text-center flex flex-col items-center justify-center break-words'>
-        <div className=' w-[90%] break-words'>{place.join(' , ')}</div>
-          <MdBackspace onClick={backPlace} className='self-end mr-2 text-3xl'/>
-        <select
-          name="place"
-          value=""
-          onChange={selectPlace}
-          onBlur={placeCheck}
-          className='h-12 bottom-0 border-none  w-full text-center rounded-3xl'>
-                              <option value="#">-- Select Places --</option>
-                              <option value="Alappuzha" >Alappuzha</option>
-                              <option value="Ernakulam">Ernakulam</option>
-                              <option value="Idukki">Idukki</option>
-                              <option value="Kannur">Kannur</option>
-                              <option value="Kasaragod">Kasaragod</option>
-                              <option value="Kollam">Kollam</option>
-                              <option value="Kottayam">Kottayam</option>
-                              <option value="Kozhikode">Kozhikode</option>
-                              <option value="Malappuram">Malappuram</option>
-                              <option value="Palakkad">Palakkad</option>
-                              <option value="Pathanamthitta">Pathanamthitta</option>
-                              <option value="Thiruvananthapuram">Thiruvananthapuram</option>
-                              <option value="Thrissur">Thrissur</option>
-                              <option value="Wayanad">Wayanad</option>
-          </select>
+                <p className=" text-red-600">{validation.description.message}</p>
+              )}
+            </div>
+            <div className='w-full '>
+              <label htmlFor="companyName" className='ml-6'>Location</label>
+
+              <div className='w-full  text-xl bg-white border-2 border-black rounded-3xl text-center flex flex-col items-center justify-center break-words'>
+                <div className=' w-[90%] break-words'>{place.join(' , ')}</div>
+                <MdBackspace onClick={backPlace} className='self-end mr-2 text-3xl' />
+                <select
+                  name="place"
+                  value=""
+                  onChange={selectPlace}
+                  onBlur={placeCheck}
+                  className='h-12 bottom-0 border-none  w-full text-center rounded-3xl'>
+                  <option value="#">-- Select Places --</option>
+                  <option value="Alappuzha" >Alappuzha</option>
+                  <option value="Ernakulam">Ernakulam</option>
+                  <option value="Idukki">Idukki</option>
+                  <option value="Kannur">Kannur</option>
+                  <option value="Kasaragod">Kasaragod</option>
+                  <option value="Kollam">Kollam</option>
+                  <option value="Kottayam">Kottayam</option>
+                  <option value="Kozhikode">Kozhikode</option>
+                  <option value="Malappuram">Malappuram</option>
+                  <option value="Palakkad">Palakkad</option>
+                  <option value="Pathanamthitta">Pathanamthitta</option>
+                  <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+                  <option value="Thrissur">Thrissur</option>
+                  <option value="Wayanad">Wayanad</option>
+                </select>
               </div>
               {!validation.place.status && (
-        <p className=" text-red-600">{validation.place.message}</p>
-      )}
-                      </div>
+                <p className=" text-red-600">{validation.place.message}</p>
+              )}
+            </div>
             <div className='w-full mb-10'>
               {!load ?
                 <button onClick={saveHandler} className='bg-green-500 hover:bg-green-600 rounded-3xl h-16 w-full text-2xl font-bold mt-6 p-4 uppercase'>save</button> :
                 <Button className=' rounded-3xl h-16 w-full text-2xl font-bold mt-6 p-4 uppercase' height={16} rounded={23} isLoading colorScheme='green' spinner={<BeatLoader size={16} color='white' />}>Click me</Button>
               }
-                      </div>
+            </div>
 
-                      
-                      
-                  </div>
-              </div> 
+
+
           </div>
-          <Footer/>
+        </div>
+      </div>
+      {/* <Footer/> */}
     </div>
   )
 }

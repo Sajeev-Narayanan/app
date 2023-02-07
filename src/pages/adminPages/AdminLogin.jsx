@@ -4,6 +4,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import axios from '../../config/axios'
 import { useDispatch, useSelector } from 'react-redux';
 import { authChange } from '../../features/authSlice';
+import instance from '../../config/instance';
 
 const AdminLogin = () => {
   const navigate = useNavigate()
@@ -36,8 +37,7 @@ const AdminLogin = () => {
     setError(false)
     const data = { name: admin.name, password: admin.password, };
     try {
-      const response = await axios.post("/admin/adminLogin", data);
-      console.log("it is working ", response);
+      const response = await instance.post("/admin/adminLogin", data);
 
       const { accessToken, refreshToken, adminName } = response.data
 
@@ -48,7 +48,6 @@ const AdminLogin = () => {
         setError(true);
       }
     } catch (error) {
-      console.log(error);
       setError(true);
     }
 

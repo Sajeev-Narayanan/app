@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import axios from "../../config/axios";
+import instance from "../../config/instance";
+import managerAxios from "../../config/managerAxios";
+import userAxios from "../../config/userAxios";
 
 const Conversation = ({ data, currentUser, online, type }) => {
 
@@ -15,19 +18,19 @@ const Conversation = ({ data, currentUser, online, type }) => {
         const getUserData = async () => {
             if (type == "manager") {
                 try {
-                    const { data } = await axios.get(`/provider/chatUsers/${userId}`)
+                    const { data } = await managerAxios.get(`/provider/chatUsers/${userId}`)
                     setUserData(data)
                 }
                 catch (error) {
-                    console.log(error)
+                    alert("No chat are available")
                 }
             } else {
                 try {
-                    const { data } = await axios.get(`/chatManagers/${userId}`)
+                    const { data } = await userAxios.get(`/chatManagers/${userId}`)
                     setUserData(data)
                 }
                 catch (error) {
-                    console.log(error)
+                    alert("No chat are available")
                 }
             }
         }

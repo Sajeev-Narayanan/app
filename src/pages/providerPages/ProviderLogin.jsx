@@ -60,7 +60,6 @@ const ProviderLogin = () => {
           message: "is this really your email ?",
         },
       }));
-      console.log("email false");
 
       return false;
     } else {
@@ -84,7 +83,6 @@ const ProviderLogin = () => {
           message: "password  must be more than 8 character",
         },
       }));
-      // console.log("password false");
       return false;
     } else {
       setValidation((prevState) => ({
@@ -103,7 +101,6 @@ const ProviderLogin = () => {
     const data = { email: userData.email, password: userData.password, };
     try {
       const response = await axios.post("/provider/managerLogin", data);
-      console.log("it is working ", response);
 
 
 
@@ -138,7 +135,6 @@ const ProviderLogin = () => {
 
 
     } catch (error) {
-      console.log(error + "&&&&&&&&&&&&&&&&&&&&");
       setValidation((prevState) => ({
         ...prevState,
         signupError: {

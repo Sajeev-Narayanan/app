@@ -6,21 +6,21 @@ import CheckoutForm from "../../components/CheckoutForm";
 import { useSelector } from "react-redux";
 import { amount } from "../../features/paymentSlice";
 import Navebar from "../../components/Navbar";
+import userAxios from "../../config/userAxios";
 
 function Payment() {
     const [stripePromise, setStripePromise] = useState(null);
     const [clientSecret, setClientSecret] = useState("");
     const payAmount = useSelector(amount)
-    console.log("payAmount{{{{{{{", payAmount);
 
     useEffect(() => {
-        axios.get("/payment/config").then(async (r) => {
+        userAxios.get("/payment/config").then(async (r) => {
             const { publishableKey } = await r.data;
             setStripePromise(loadStripe(publishableKey));
         });
     }, []);
     useEffect(() => {
-        axios.post("/payment/createPaymentIntent", { payAmount }).then(async (result) => {
+        userAxios.post("/payment/createPaymentIntent", { payAmount }).then(async (result) => {
             const { clientSecret } = await result.data;
             setClientSecret(clientSecret);
         });

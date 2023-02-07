@@ -6,7 +6,6 @@ import axios from '../../config/axios'
 const ManagerChangePassword = () => {
 
   const { userId, token } = useParams();
-  // console.log(userId, token);
 
   const [password, setPassword] = useState("");
   const [errMsg, setErrMsg] = useState("");
@@ -31,7 +30,6 @@ const ManagerChangePassword = () => {
 
 
   const submitHandler = async () => {
-    // console.log("sumbit working");
 
     if (password.length < 8) {
       setErrMsg("password must greater 8 character ");
@@ -43,10 +41,8 @@ const ManagerChangePassword = () => {
         passwordToken: token,
         password,
       });
-      // console.log(response);
       navigate("/providerlogin");
     } catch (error) {
-      // console.log(error);
       if (error.response.status === 400) {
         setErrMsg("session expires ");
         return;

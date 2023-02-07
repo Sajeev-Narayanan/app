@@ -42,7 +42,6 @@ import Signup from './pages/Signup';
 import SingleProvider from './pages/SingleProvider';
 import SparklingStories from './pages/SparklingStories';
 import UserLandingPage from './pages/UserLandingPage'
-import UserMessages from './pages/UserMessages';
 
 
 
@@ -71,7 +70,6 @@ function App() {
           <Route path='home' element={<UserLandingPage />} />
           <Route path="providers/:service" element={<Providers />} />
           <Route path="provider/:id" element={<SingleProvider />} />
-          <Route path="messages" element={<UserMessages />} />
           <Route path="chat" element={<Chat />} />
           <Route path="completion" element={<Completion />} />
           <Route path="payment" element={<Payment />} />

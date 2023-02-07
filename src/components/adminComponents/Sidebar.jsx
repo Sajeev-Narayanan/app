@@ -2,17 +2,22 @@ import { useState } from "react";
 import { FaUsersCog, FaChessRook } from "react-icons/fa";
 import { BiTransfer } from "react-icons/bi"
 import { VscRequestChanges } from "react-icons/vsc";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { authChange } from "../../features/authSlice";
+import { authChange, refreshToken } from "../../features/authSlice";
+import instance from "../../config/instance";
 const Sidebar = (props) => {
   const [open, setOpen] = useState(true);
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const token = useSelector(refreshToken)
 
-  const handleLogout = () => {
-    dispatch(authChange({ adminName: "", accessToken: "", refreshToken: "" }))
-    navigate('/adminLogin')
+  const handleLogout = async () => {
+    const response = await instance.post("/admin/adminLogout", { token })
+    if (response.status === 204) {
+      dispatch(authChange({ adminName: "", accessToken: "", refreshToken: "" }))
+      navigate('/adminLogin')
+    }
   }
 
   return (

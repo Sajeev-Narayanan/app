@@ -20,4 +20,5 @@ const authSlice = createSlice({
 
 export default authSlice.reducer
 export const { authChange } = authSlice.actions
-export const currentToken =(state) =>state.auth.accessToken
+export const currentToken = (state) => state.auth.accessToken
+export const refreshToken = (state) => state.auth.refreshToken

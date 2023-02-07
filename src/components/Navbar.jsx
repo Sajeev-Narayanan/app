@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { refreshToken2, userAuthChange, userData2 } from '../features/userAuthSlice';
 import axios from '../config/axios'
 import { useToast } from '@chakra-ui/toast';
+import instance from '../config/instance';
 
 const Navebar = () => {
 
@@ -45,7 +46,7 @@ const Navebar = () => {
 
   const handleLogout = async (e) => {
     // dispatch(userGoogleLoginChange({ user: "" }))
-    const response = await axios.post('/logout', { email: user2, token: token })
+    const response = await instance.post('/logout', { email: user2, token: token })
     if (response.status === 204) {
 
       dispatch(userAuthChange({ user: "", accessToken: "", refreshToken: "", id: "" }))
@@ -63,7 +64,7 @@ const Navebar = () => {
     <div className='h-20 px-8 z-50 bg-white top-0 sticky shadow-md'>
       <div className='flex items-center h-20 max-w-[1240px] mx-auto justify-between'>
         {/* <h1 className='w-full text-3xl font-bold'>LOGO</h1> */}
-        <img src="logo.png" alt="logo" width={120} />
+        <img src="../public/logo.png" alt="logo" width={120} />
         <ul className='hidden md:flex'>
           <li onClick={homeHandle} className='p-4 font-bold cursor-pointer'>HOME</li>
 

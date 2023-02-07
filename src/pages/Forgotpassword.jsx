@@ -11,10 +11,8 @@ const Forgotpassword = () => {
     const addServiceClose = () => setOtpmodal(false);
 
     const submitHandler = async () => {
-        // console.log("sumbit working");
         const expr = /^(91)?[0-9]{10}$/;
         if (!phone.match(expr)) {
-            console.log("not really a number");
             setErrMsg("Enter valid phone number");
             return;
         }
@@ -22,7 +20,6 @@ const Forgotpassword = () => {
             const response = await axios.post("/forgotPassword", {
                 mobile: phone,
             });
-            // console.log(response.data);
             setOtpmodal(true)
         } catch (error) {
             if (error.response.status === 400) {

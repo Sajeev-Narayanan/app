@@ -21,15 +21,12 @@ const LoginWithGoogle = () => {
   })
 
   const handleCallBackResponse = async (response) => {
-    // console.log("Encoded JWT ID Token" + response.credential);
     const userObject = jwtDecode(response.credential);
 
-    // setUser(userObject.email)
 
     const data = { email: userObject.email };
     try {
       const response = await axios.post("/googleLogin", data);
-      console.log("it is working ", response);
 
 
 
@@ -41,14 +38,6 @@ const LoginWithGoogle = () => {
 
           navigate('/')
         }
-        // setValidation((prevState) => ({
-        //   ...prevState,
-        //   signupError: {
-        //     value: true,
-        //     message: "",
-        //   },
-        // }));
-        // return true;
 
       } else {
         toast({

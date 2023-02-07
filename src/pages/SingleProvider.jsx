@@ -8,6 +8,7 @@ import axios from '../config/axios'
 import { useToast } from '@chakra-ui/toast'
 import { useSelector } from 'react-redux'
 import { userData2, currentUserId } from '../features/userAuthSlice'
+import userAxios from '../config/userAxios'
 
 
 const SingleProvider = () => {
@@ -21,8 +22,7 @@ const SingleProvider = () => {
 
   useEffect(() => {
     try {
-      axios.get(`/managerProfile?id=${id}`).then((response) => {
-        console.log(response.data)
+      userAxios.get(`/managerProfile?id=${id}`).then((response) => {
         if (response.status === 201) {
           if (response.data) {
             setData(response.data)
@@ -69,16 +69,16 @@ const SingleProvider = () => {
   const buttonhandle = async () => {
     try {
 
-      const response = await axios.post('/chat', {
+      const response = await userAxios.post('/chat', {
         senderId: userId, receiverId: data._id
       })
       if (response.status === 200) {
         navigate('/chat')
       } else {
-        console.log(response.error)
+        alert("server error")
       }
     } catch (error) {
-      console.log(response.error)
+      alert("server error")
     }
 
   }

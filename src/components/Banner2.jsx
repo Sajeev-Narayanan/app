@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
-import image from '../../public/banner.png';
+import image from '/banner.png';
 
 
 const Banner2 = ({ type }) => {

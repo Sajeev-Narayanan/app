@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { managersAuthChange, managersData, managersRefreshToken } from '../../features/managersAuthSlice'
 import axios from '../../config/axios'
 import { useToast } from '@chakra-ui/toast';
+import instance from '../../config/instance'
 
 
 const Navebar = () => {
@@ -39,7 +40,7 @@ const Navebar = () => {
   }
 
   const handleLogout = async (e) => {
-    const response = await axios.post('/provider/managersLogout', { email: managers, token: token })
+    const response = await instance.post('/provider/managersLogout', { email: managers, token: token })
     if (response.status === 204) {
       dispatch(managersAuthChange({ managers: "", accessToken: "", refreshToken: "", managerId: "" }))
       navigate("/providerLogin")

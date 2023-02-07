@@ -5,6 +5,7 @@ import Footer from '../components/Footer'
 import Navebar from '../components/Navbar'
 import ProvidersCard from '../components/ProvidersCard'
 import axios from '../config/axios'
+import userAxios from '../config/userAxios'
 // import { useGeolocated } from "react-geolocated";
 
 const Providers = () => {
@@ -17,10 +18,7 @@ const Providers = () => {
 
   const [currLocationJs, setCurrLocationJs] = useState({});
 
-  // AIzaSyBjU00eddD4yRAfeFli6KD2L7sRDaDVlno
-  // const { coords, isGeolocationAvailable, isGeolocationEnabled } =useGeolocated({ });
-  //   console.log("{{{{{{{{object}}}}}}}}")
-  //   coords && console.log(coords.latitude,"kitteeeee");
+
 
   useEffect(() => {
     const city = getLocationJs()
@@ -28,10 +26,10 @@ const Providers = () => {
 
 
   useEffect(() => {
-    axios.get(`/findManagers?service=${service}&place=${location}`).then((response) => {
+    userAxios.get(`/findManagers?service=${service}&place=${location}`).then((response) => {
       if (response.status === 201) {
         if (response.data.length == 0) {
-          // navigate("/userlanding")
+
           toast({
             position: "top",
             variant: 'left-accent',
@@ -43,7 +41,7 @@ const Providers = () => {
         } else { setData(response.data) }
 
       } else {
-        //  navigate("/userlanding")
+
         toast({
           position: "top",
           variant: 'left-accent',
@@ -62,15 +60,10 @@ const Providers = () => {
   const getLocationJs = async () => {
 
     await navigator.geolocation.getCurrentPosition((position) => {
-      console.log(position);
+
       const { latitude, longitude } = position.coords;
       setCurrLocationJs({ latitude, longitude });
-      //  fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&sensor=false&key="AIzaSyBjU00eddD4yRAfeFli6KD2L7sRDaDVlno"`)
-      //  .then(response => response.json())
-      //  .then((data) => {
-      //      console.log(latitude,"::::::::",longitude)
-      //    console.log(data);
-      //  })
+
 
       const requestOptions = {
         method: 'GET',
@@ -79,12 +72,11 @@ const Providers = () => {
       fetch(`https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&apiKey=e6fb65f9141a4db98198812eebc6e560`, requestOptions)
         .then(response => response.json())
         .then(result => {
-          console.log(result.features[0].properties);
           setLocation(result.features[0].properties.county)
           return result.features[0].properties.county
           setDone(true)
         })
-        .catch(error => console.log('error', error));
+        .catch(error => alert("server error"));
 
     });
   };

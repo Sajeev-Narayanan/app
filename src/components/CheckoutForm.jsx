@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { estimateId, paymentChange } from "../features/paymentSlice";
 import axios from '../config/axios'
+import userAxios from "../config/userAxios";
 
 export default function CheckoutForm() {
     const stripe = useStripe();
@@ -40,15 +41,17 @@ export default function CheckoutForm() {
             setMessage(error.message)
         } else if (paymentIntent && paymentIntent.status === "succeeded") {
             try {
-                axios.get(`/payment/paymentDone/${id}`).then(async (res) => {
+                userAxios.get(`/payment/paymentDone/${id}`).then(async (res) => {
                     if (res.status === 201) {
                         await dispatch(paymentChange({ amount: "" }))
 
                         onOpen()
-                    } else { console.log("error") }
+                    } else {
+                        alert("server failed")
+                    }
                 })
             } catch (error) {
-                console.log(error)
+                alert("server failed")
             }
 
         } else {

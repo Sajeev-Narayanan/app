@@ -13,6 +13,7 @@ import { managersData } from '../../features/managersAuthSlice'
 import { Link } from 'react-router-dom'
 import OurServices from '../../components/providerComponents/OurServices'
 import OurGalary from '../../components/providerComponents/OurGalary'
+import managerAxios from '../../config/managerAxios'
 
 
 const ProviderProfile = () => {
@@ -32,16 +33,15 @@ const ProviderProfile = () => {
   const managers = useSelector(managersData)
   useEffect(() => {
     try {
-      axios.post("/provider/providerDetails", { email: managers }).then((response) => {
+      managerAxios.post("/provider/providerDetails", { email: managers }).then((response) => {
         if (response.status === 200) {
-          console.log(response.data.data.gallery)
           setData(response.data.data)
         } else {
-          console.log("error");
+          alert("server error")
         }
       })
     } catch (error) {
-      // console.log(error);
+      alert("server error")
 
     }
 
@@ -50,7 +50,6 @@ const ProviderProfile = () => {
   return (
     <div>
       <Navebar />
-      {console.log(data.coverPhoto)}
       <div className={data.coverPhoto ? `bg-black w-full h-[300px] lg:h-[500px] flex relative justify-center` : 'bg-slate-300 w-full h-[300px] lg:h-[500px] flex relative justify-center'} >
         {data.coverPhoto && <div className='w-full h-full bg-cover bg-no-repeat' style={{ backgroundImage: `url(${data.coverPhoto})` }}></div>}
         <Link to="/editProfile" className='bg-white border-black border-2 absolute right-16 top-14 w-48 h-16 rounded-2xl flex items-center justify-center text-xl font-semibold hover:shadow-xl uppercase hover:bg-[#E1EDF8] hover:scale-105'>edit profile</Link>
@@ -98,7 +97,7 @@ const ProviderProfile = () => {
       <AddServiceModal onClose={addServiceClose} inService={data.category} visible={addService} />
       <AddImage onClose={addImageClose} visible={addImage} />
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }

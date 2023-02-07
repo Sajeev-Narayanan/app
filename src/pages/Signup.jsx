@@ -67,7 +67,6 @@ const Signup = () => {
           message: "is this really your email ?",
         },
       }));
-      console.log("email false");
 
       return false;
     } else {
@@ -92,7 +91,6 @@ const Signup = () => {
           message: "is this really your phone ?",
         },
       }));
-      // console.log("phone false");
 
       return false;
     } else {
@@ -116,7 +114,6 @@ const Signup = () => {
           message: "password  must be more than 8 character",
         },
       }));
-      // console.log("password false");
       return false;
     } else {
       setValidation((prevState) => ({
@@ -143,7 +140,7 @@ const Signup = () => {
       const data = { email: userData.email, phone: userData.phone, password: userData.password, };
       try {
         const response = await axios.post("/signup", data);
-        console.log("it is working ", response);
+
 
 
 

@@ -21,7 +21,6 @@ const TransactionHistory = () => {
                 }
             })
         } catch (error) {
-            console.log(error);
             alert("SOMETHING WEONG!!!!!!!!!!!!!")
         }
 

@@ -11,6 +11,7 @@ import Conversation from "../../../components/Coversation/Coversation";
 import ChatBox from "../../../components/ChatBox/ChatBox";
 import Navebar from "../../../components/providerComponents/Navbar";
 import CreateEstimateModal from "../../../components/ChatBox/CreateEstimateModal";
+import userAxios from "../../../config/userAxios";
 
 const ManagerChat = () => {
     const dispatch = useDispatch();
@@ -31,11 +32,10 @@ const ManagerChat = () => {
     useEffect(() => {
         const getChats = async () => {
             try {
-                const { data } = await axios.get(`/chat/${userId}`);
+                const { data } = await userAxios.get(`/chat/${userId}`);
                 setChats(data);
-                console.log("$$$$$$$$", data)
             } catch (error) {
-                console.log(error, "sanju");
+                alert("server error")
             }
         };
         getChats();
@@ -61,7 +61,6 @@ const ManagerChat = () => {
     // Get the message from socket server
     useEffect(() => {
         socket.current.on("recieve-message", (data) => {
-            console.log(data, "socket data kitttteeeeee")
             setReceivedMessage(data);
         }
 

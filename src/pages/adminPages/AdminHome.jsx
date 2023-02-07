@@ -6,7 +6,6 @@ import { currentToken } from '../../features/authSlice'
 
 const AdminHome = () => {
   const token = useSelector(currentToken)
-  console.log("currenttoken", token);
   return (
     <div className='flex'>
       <Sidebar />
