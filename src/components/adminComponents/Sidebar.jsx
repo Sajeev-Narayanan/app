@@ -27,7 +27,7 @@ const Sidebar = (props) => {
           } bg-black h-screen p-5  pt-8 relative duration-300`}
       >
         <img
-          src="./src/assets/control.png"
+          src="control.png"
           className={`absolute cursor-pointer -right-3 top-9 w-7 border-dark-purple
            border-2 rounded-full  ${!open && "rotate-180"}`}
           onClick={() => setOpen(!open)}

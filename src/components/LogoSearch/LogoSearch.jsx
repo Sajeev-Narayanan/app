@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // import Logo from "../../img/logo.png";
-import Logo from "../../../public/img-scelton.png"
+import Logo from "/img-scelton.png"
 import './LogoSearch.css'
 import { UilSearch } from '@iconscout/react-unicons'
 const LogoSearch = () => {

@@ -64,7 +64,7 @@ const Navebar = () => {
     <div className='h-20 px-8 z-50 bg-white top-0 sticky shadow-md'>
       <div className='flex items-center h-20 max-w-[1240px] mx-auto justify-between'>
         {/* <h1 className='w-full text-3xl font-bold'>LOGO</h1> */}
-        <img src="../public/logo.png" alt="logo" width={120} />
+        <img src="logo.png" alt="logo" width={120} />
         <ul className='hidden md:flex'>
           <li onClick={homeHandle} className='p-4 font-bold cursor-pointer'>HOME</li>
 

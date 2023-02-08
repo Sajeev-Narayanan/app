@@ -5,7 +5,7 @@ import instance from "./instance";
 
 
 const adminAxios = axios.create({
-  baseURL: "http://localhost:8000/",
+  baseURL: import.meta.env.VITE_SERVER,
   headers: {
     "Access-Control-Allow-Origin": "*",
   },

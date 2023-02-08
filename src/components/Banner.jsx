@@ -13,7 +13,7 @@ const Banner = (props) => {
         <div></div>
       </div>
 
-      <div className={`${props.type == 'admin' ? "hidden" : "flex"}  w-full  justify-center`}><img src="../../public/scroll.webp" alt="scroll" className='z-50 w-20 h-20 md:w-20 md:h-30 lg:w-40 lg:h-40' /></div>
+      <div className={`${props.type == 'admin' ? "hidden" : "flex"}  w-full  justify-center`}><img src="/scroll.webp" alt="scroll" className='z-50 w-20 h-20 md:w-20 md:h-30 lg:w-40 lg:h-40' /></div>
     </div>
 
   )

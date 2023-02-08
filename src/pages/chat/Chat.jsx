@@ -44,7 +44,7 @@ const Chat = () => {
 
     // Connect to Socket.io
     useEffect(() => {
-        socket.current = io("http://localhost:8800");
+        socket.current = io(import.meta.env.VITE_SOCKET);
         socket.current.emit("new-user-add", userId);
         socket.current.on("get-users", (users) => {
             setOnlineUsers(users);

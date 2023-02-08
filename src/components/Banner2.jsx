@@ -27,7 +27,7 @@ const Banner2 = ({ type }) => {
                 <button onClick={eventHandle} className='w-56 h-16 rounded-2xl border-2 border-white text-xl text-white uppercase font-Viaoda font-semibold shadow-2xl shadow-black hover:bg-black  hover:bg-opacity-50 hover:scale-105 hover:-translate-y-1 hover:duration-300'>event management</button>
             </div>
 
-            <div className={`${(type === 'admin' || type === "landing") ? "hidden" : "flex"}  w-full  justify-center`}><img src="../../public/scroll.webp" alt="scroll" className='z-50 w-20 h-20 md:w-20 md:h-30 lg:w-40 lg:h-40' /></div>
+            <div className={`${(type === 'admin' || type === "landing") ? "hidden" : "flex"}  w-full  justify-center`}><img src="/scroll.webp" alt="scroll" className='z-50 w-20 h-20 md:w-20 md:h-30 lg:w-40 lg:h-40' /></div>
         </div>
 
     )
