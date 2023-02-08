@@ -30,9 +30,14 @@ const CreateEstimateModal = ({ visible, onClose, userId, managerId }) => {
     }
 
     useEffect(() => {
-        managerAxios.get(`/provider/estimateDetails/${userId}/${managerId}`).then((res) => {
-            setPrevEstimate(res.data)
-        })
+        try {
+            managerAxios.get(`/provider/estimateDetails/${userId}/${managerId}`).then((res) => {
+                setPrevEstimate(res.data)
+            })
+        } catch (error) {
+            alert("some network problem")
+        }
+
     }, [userId, visible]);
 
 

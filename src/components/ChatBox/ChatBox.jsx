@@ -48,9 +48,15 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage, type, add
     useEffect(() => {
         const fetchMessages = async () => {
             try {
-                const { data } = await userAxios.get(`/message/${chat._id}`);
-                setMessages(data);
+                if (type == "manager") {
+                    const { data } = await managerAxios.get(`/message/${chat._id}`);
+                    setMessages(data);
+                } else {
+                    const { data } = await userAxios.get(`/message/${chat._id}`);
+                    setMessages(data);
+                }
             } catch (error) {
+                alert("network problem")
             }
         };
 
@@ -78,13 +84,20 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage, type, add
         setSendMessage({ ...message, receiverId })
         // send message to database
         try {
-            const { data } = await userAxios.post('/message/', message);
-            setMessages([...messages, data]);
-            setNewMessage("");
+            if (type == "manager") {
+                const { data } = await managerAxios.post('/message/', message);
+                setMessages([...messages, data]);
+                setNewMessage("");
+            } else {
+                const { data } = await userAxios.post('/message/', message);
+                setMessages([...messages, data]);
+                setNewMessage("");
+            }
+
         }
         catch
         {
-            alert("SOMETHING WRONG!!!!!!!!!!!!!")
+            alert("NETWORK PROBLEM!!!!!!!!!!!!!")
         }
     }
 
