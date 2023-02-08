@@ -12,6 +12,7 @@ import ChatBox from "../../../components/ChatBox/ChatBox";
 import Navebar from "../../../components/providerComponents/Navbar";
 import CreateEstimateModal from "../../../components/ChatBox/CreateEstimateModal";
 import userAxios from "../../../config/userAxios";
+import managerAxios from "../../../config/managerAxios";
 
 const ManagerChat = () => {
     const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const ManagerChat = () => {
     useEffect(() => {
         const getChats = async () => {
             try {
-                const { data } = await userAxios.get(`/chat/${userId}`);
+                const { data } = await managerAxios.get(`/chat/${userId}`);
                 setChats(data);
             } catch (error) {
                 alert("server error")
