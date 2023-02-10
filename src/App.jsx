@@ -12,7 +12,6 @@ import ManagersRequireAuth from './features/ManagersRequireAuth';
 import { userData2 } from './features/userAuthSlice';
 // import { userData } from './features/userGoogleAuthSlice';
 import UserRequireAuth from './features/UserRequireAuth';
-import userRequireAuth from './features/UserRequireAuth';
 import AdminHome from './pages/adminPages/AdminHome';
 import AdminLogin from './pages/adminPages/AdminLogin';
 import EventManagers from './pages/adminPages/EventManagers';
@@ -24,6 +23,7 @@ import Chat from './pages/chat/Chat';
 // import Chat from './pages/Chat';
 import Forgotpassword from './pages/Forgotpassword';
 import Login from './pages/Login';
+import MyOrders from './pages/MyOrders';
 import Completion from './pages/payment/Completion';
 import Payment from './pages/payment/Payment';
 import Profile from './pages/Profile';
@@ -31,9 +31,7 @@ import ManagerChat from './pages/providerPages/chat/ManagerChat';
 import EditProfile from './pages/providerPages/EditProfile';
 import ManagerChangePassword from './pages/providerPages/ManagerChangePassword';
 import ManagersForgotPassword from './pages/providerPages/ManagersForgotPassword';
-import ManagersLanding from './pages/providerPages/ManagersLanding';
-import Messages from './pages/providerPages/Messages';
-import ProviderChat from './pages/providerPages/ProviderChat';
+import Orders from './pages/providerPages/Orders';
 import ProviderLogin from './pages/providerPages/ProviderLogin';
 import ProviderProfile from './pages/providerPages/ProviderProfile';
 import ProviderSignup from './pages/providerPages/ProviderSignup';
@@ -73,6 +71,7 @@ function App() {
           <Route path="chat" element={<Chat />} />
           <Route path="completion" element={<Completion />} />
           <Route path="payment" element={<Payment />} />
+          <Route path="myOrders" element={<MyOrders />} />
         </Route>
 
         <Route path="providerLogin" element={manager != "" ? <Navigate to="/providerProfile" /> : <ProviderLogin />} />
@@ -84,6 +83,7 @@ function App() {
           <Route path="providerProfile" element={<ProviderProfile />} />
           <Route path="editProfile" element={<EditProfile />} />
           <Route path="managersChat" element={<ManagerChat />} />
+          <Route path="orders" element={<Orders />} />
         </Route>
 
 

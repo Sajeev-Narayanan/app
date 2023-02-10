@@ -1,5 +1,5 @@
 import { Button } from '@chakra-ui/react';
-import React, { useMemo, useState } from 'react'
+import React, { useMemo, useRef, useState } from 'react'
 import DataTable from 'react-data-table-component';
 import styled from 'styled-components';
 import jsPDF from "jspdf";
@@ -55,6 +55,10 @@ const FilterComponent = ({ filterText, onFilter, onClear }) => (
 );
 
 const TransactionTable = ({ data }) => {
+
+
+
+
     const exportPDF = () => {
         const unit = "pt";
         const size = "A4"; // Use A1, A2, A3 or A4
@@ -135,6 +139,7 @@ const TransactionTable = ({ data }) => {
     return (
 
         < div >
+
             <Button onClick={() => exportPDF()}>Transaction Report</Button>
             < DataTable
                 columns={columns}
@@ -143,6 +148,7 @@ const TransactionTable = ({ data }) => {
                 paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
                 subHeader
                 subHeaderComponent={subHeaderComponentMemo}
+
 
             />
         </div >

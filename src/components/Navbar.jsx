@@ -7,6 +7,7 @@ import { refreshToken2, userAuthChange, userData2 } from '../features/userAuthSl
 import axios from '../config/axios'
 import { useToast } from '@chakra-ui/toast';
 import instance from '../config/instance';
+import { Link } from 'react-router-dom';
 
 const Navebar = () => {
 
@@ -64,13 +65,14 @@ const Navebar = () => {
     <div className='h-20 px-8 z-50 bg-white top-0 sticky shadow-md'>
       <div className='flex items-center h-20 max-w-[1240px] mx-auto justify-between'>
         {/* <h1 className='w-full text-3xl font-bold'>LOGO</h1> */}
-        <img src="logo.png" alt="logo" width={120} />
+        <img src="/logo.png" alt="logo" width={120} />
         <ul className='hidden md:flex'>
           <li onClick={homeHandle} className='p-4 font-bold cursor-pointer'>HOME</li>
 
           <li className='p-4 font-bold cursor-pointer'><HashLink smooth to="/home#services">SERVICES</HashLink></li>
           {/* <li onClick={profileHandle} className='p-4 font-bold cursor-pointer'>PROFILE</li> */}
           <li onClick={chatHandler} className='p-4 font-bold cursor-pointer'>CHATS</li>
+          <li className='p-4 font-bold cursor-pointer'><Link to={'/myOrders'}>ORDERS</Link></li>
           {user2 && <li onClick={(e) => { handleLogout(e) }} className='p-4 font-bold cursor-pointer'>LOGOUT</li>}
         </ul>
         <div className='block md:hidden' onClick={handleNav}>
@@ -81,12 +83,13 @@ const Navebar = () => {
           {/* <h1 className='w-full text-3xl font-bold m-4'>LOGO</h1> */}
           <img src="logo.png" alt="logo" width={260} />
           <ul className='p-4 uppercase'>
-            <li onClick={homeHandle} className='p-4 border-b border-gray-600 font-bold cursor-pointer'>HOME</li>
+            <li onClick={homeHandle} className='p-4 border-b border-gray-600 font-bold cursor-pointer rounded-xl mt-2 hover:shadow-inner hover:shadow-black'>HOME</li>
 
-            <li className='p-4 border-b border-gray-600 font-bold cursor-pointer'><HashLink smooth to="/home#services">SERVICES</HashLink></li>
+            <li className='p-4 border-b border-gray-600 font-bold cursor-pointer rounded-xl mt-2 hover:shadow-inner hover:shadow-black'><HashLink smooth to="/home#services">SERVICES</HashLink></li>
             {/* <li onClick={profileHandle} className='p-4 border-b border-gray-600 font-bold cursor-pointer'>PROFILE</li> */}
-            <li onClick={chatHandler} className='p-4 border-b border-gray-600 font-bold cursor-pointer'>CHATS</li>
-            {user2 && <li onClick={(e) => { handleLogout(e) }} className='p-4 font-bold cursor-pointer'>LOGOUT</li>}
+            <li onClick={chatHandler} className='p-4 border-b border-gray-600 font-bold cursor-pointer rounded-xl mt-2 hover:shadow-inner hover:shadow-black'>CHATS</li>
+            <li className='p-4 border-b border-gray-600 font-bold cursor-pointer rounded-xl mt-2 hover:shadow-inner hover:shadow-black'><Link to={'/myOrders'}>ORDERS</Link></li>
+            {user2 && <li onClick={(e) => { handleLogout(e) }} className='p-4 mt-2 border-b border-gray-600 hover:bg-black hover:text-white rounded-xl font-bold cursor-pointer'>LOGOUT</li>}
           </ul>
         </div>
       </div>

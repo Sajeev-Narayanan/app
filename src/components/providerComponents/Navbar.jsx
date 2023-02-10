@@ -6,6 +6,7 @@ import { managersAuthChange, managersData, managersRefreshToken } from '../../fe
 import axios from '../../config/axios'
 import { useToast } from '@chakra-ui/toast';
 import instance from '../../config/instance'
+import { Link } from 'react-router-dom'
 
 
 const Navebar = () => {
@@ -64,6 +65,7 @@ const Navebar = () => {
 
           <li onClick={profileHandle} className='p-4 font-bold cursor-pointer'>PROFILE</li>
           <li onClick={messageHandler} className='p-4 font-bold cursor-pointer'>MESSAGES</li>
+          <li className='p-4 font-bold cursor-pointer'><Link to={'/orders'}>ORDERS</Link></li>
           {managers && <li onClick={(e) => { handleLogout(e) }} className='p-4 hover:bg-black hover:text-white rounded-xl font-bold cursor-pointer'>LOGOUT</li>}
         </ul>
         <div className='block md:hidden' onClick={handleNav}>
@@ -77,8 +79,9 @@ const Navebar = () => {
             {/* <li onClick={homeHandle} className='p-4 border-b border-gray-600 font-bold cursor-pointer'>HOME</li> */}
 
 
-            <li className='p-4 border-b border-gray-600 font-bold cursor-pointer rounded-xl mt-2'>PROFILE</li>
-            <li onClick={messageHandler} className='p-4 border-b border-gray-600 font-bold cursor-pointer rounded-xl mt-2'>MESSAGES</li>
+            <li className='p-4 border-b border-gray-600 font-bold cursor-pointer rounded-xl mt-2 hover:shadow-inner hover:shadow-black'>PROFILE</li>
+            <li onClick={messageHandler} className='p-4 border-b border-gray-600 font-bold cursor-pointer rounded-xl mt-2 hover:shadow-inner hover:shadow-black'>MESSAGES</li>
+            <li className='p-4 border-b border-gray-600 font-bold cursor-pointer rounded-xl mt-2 hover:shadow-inner hover:shadow-black'><Link to={'/orders'}>ORDERS</Link></li>
             {managers && <li onClick={(e) => { handleLogout(e) }} className='p-4 mt-2 border-b border-gray-600 hover:bg-black hover:text-white rounded-xl font-bold cursor-pointer'>LOGOUT</li>}
           </ul>
         </div>

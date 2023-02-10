@@ -31,7 +31,7 @@ function Payment() {
             <Navebar />
             <div className="flex flex-col justify-center items-center w-full h-[927px]">
                 <h1 className="text-3xl mb-8 drop-shadow-2xl droshadow- md:text-4xl font-Viaoda font-semibold">Make your payment here!</h1>
-                <div className="bg-white p-10 rounded-2xl shadow-2xl md:w-[40%]">
+                <div className="bg-white p-10 rounded-2xl shadow-2xl md:w-[34%]">
                     {clientSecret && stripePromise && (
                         < Elements stripe={stripePromise} options={{ clientSecret }}>
                             <CheckoutForm />
