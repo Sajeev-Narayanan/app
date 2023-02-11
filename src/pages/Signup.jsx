@@ -5,6 +5,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 import axios from '../config/axios'
 import UserOtpModal from '../components/UserOtpModal';
 import SignupWithGoogle from '../components/SignupWithGoogle';
+import instance from '../config/instance';
 const Signup = () => {
 
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -136,10 +137,11 @@ const Signup = () => {
 
   const signupHandler = async () => {
     setGsignupErr(false)
-    if (emailCheck(), passwordCheck(), PhoneCheck()) {
+    if (emailCheck() == true && passwordCheck() == true && PhoneCheck() == true) {
+
       const data = { email: userData.email, phone: userData.phone, password: userData.password, };
       try {
-        const response = await axios.post("/signup", data);
+        const response = await instance.post("/signup", data);
 
 
 
@@ -180,6 +182,7 @@ const Signup = () => {
         // setError(true);
       }
     } else {
+
       PhoneCheck()
       passwordCheck()
       emailCheck()

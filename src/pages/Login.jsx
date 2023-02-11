@@ -100,54 +100,60 @@ const Login = () => {
   };
 
   const loginHandler = async () => {
-    const data = { email: userData.email, password: userData.password, };
-    try {
-      const response = await axios.post("/login", data);
+    if (passwordCheck() == true && emailCheck() == true) {
+      const data = { email: userData.email, password: userData.password, };
+      try {
+        const response = await axios.post("/login", data);
 
 
-      if (response.status === 201) {
-        const { accessToken, refreshToken, user, id } = response.data
+        if (response.status === 201) {
+          const { accessToken, refreshToken, user, id } = response.data
 
-        const disp = dispatch(userAuthChange({ accessToken, refreshToken, user, id }))
-        if (disp) {
+          const disp = dispatch(userAuthChange({ accessToken, refreshToken, user, id }))
+          if (disp) {
 
-          navigate('/home')
+            navigate('/home')
+          }
+          setValidation((prevState) => ({
+            ...prevState,
+            signupError: {
+              value: true,
+              message: "",
+            },
+          }));
+          return true;
+
+        } else if (response.status === 403) {
+          setValidation((prevState) => ({
+            ...prevState,
+            signupError: {
+              value: false,
+              message: "Something wrong happened",
+            },
+          }));
+          return false;
         }
-        setValidation((prevState) => ({
-          ...prevState,
-          signupError: {
-            value: true,
-            message: "",
-          },
-        }));
-        return true;
 
-      } else if (response.status === 403) {
+
+      } catch (error) {
+
+
         setValidation((prevState) => ({
           ...prevState,
           signupError: {
             value: false,
-            message: "Something wrong happened",
+            message: "Incorrect password or email"
           },
         }));
         return false;
+
+        // setError(true);
       }
-
-
-    } catch (error) {
-
-
-      setValidation((prevState) => ({
-        ...prevState,
-        signupError: {
-          value: false,
-          message: "Incorrect password or email"
-        },
-      }));
-      return false;
-
-      // setError(true);
+    } else {
+      emailCheck();
+      passwordCheck();
     }
+
   }
 
 

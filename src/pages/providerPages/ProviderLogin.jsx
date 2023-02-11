@@ -98,31 +98,44 @@ const ProviderLogin = () => {
 
 
   const loginHandler = async () => {
-    const data = { email: userData.email, password: userData.password, };
-    try {
-      const response = await axios.post("/provider/managerLogin", data);
+    if (passwordCheck(), emailCheck()) {
+      const data = { email: userData.email, password: userData.password, };
+      try {
+        const response = await axios.post("/provider/managerLogin", data);
 
 
 
-      if (response.status === 201) {
-        const { accessToken, refreshToken, managers, managerId } = response.data
+        if (response.status === 201) {
+          const { accessToken, refreshToken, managers, managerId } = response.data
 
 
-        const disp = dispatch(managersAuthChange({ accessToken, refreshToken, managers, managerId }))
-        if (disp) {
+          const disp = dispatch(managersAuthChange({ accessToken, refreshToken, managers, managerId }))
+          if (disp) {
 
-          // navigate('/managersLanding')
+            // navigate('/managersLanding')
+          }
+          setValidation((prevState) => ({
+            ...prevState,
+            signupError: {
+              value: true,
+              message: "",
+            },
+          }));
+          return true;
+
+        } else {
+          setValidation((prevState) => ({
+            ...prevState,
+            signupError: {
+              value: false,
+              message: "Something wrong happened",
+            },
+          }));
+          return false;
         }
-        setValidation((prevState) => ({
-          ...prevState,
-          signupError: {
-            value: true,
-            message: "",
-          },
-        }));
-        return true;
 
-      } else {
+
+      } catch (error) {
         setValidation((prevState) => ({
           ...prevState,
           signupError: {
@@ -131,20 +144,10 @@ const ProviderLogin = () => {
           },
         }));
         return false;
+        // setError(true);
       }
-
-
-    } catch (error) {
-      setValidation((prevState) => ({
-        ...prevState,
-        signupError: {
-          value: false,
-          message: "Something wrong happened",
-        },
-      }));
-      return false;
-      // setError(true);
     }
+
   }
 
 
