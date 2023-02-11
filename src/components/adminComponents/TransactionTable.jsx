@@ -90,6 +90,64 @@ const TransactionTable = ({ data }) => {
         doc.save("report.pdf")
     }
 
+    function convertArrayOfObjectsToCSV(array) {
+        let result;
+        const columnDelimiter = ',';
+        const lineDelimiter = '\n';
+        const keys = Object.keys(data[0]);
+
+        result = '';
+        result += keys.join(columnDelimiter);
+        result += lineDelimiter;
+
+        array.forEach(item => {
+            let ctr = 0;
+            keys.forEach(key => {
+                if (ctr > 0) result += columnDelimiter;
+                if (key !== "estimate") {
+                    result += item[key];
+
+                    ctr++;
+                } else {
+                    result += item[key].reduce((sum, amount) => { return (Number(sum) + Number(amount.price)) }, 0);
+
+                    ctr++;
+                }
+
+
+
+            });
+            result += lineDelimiter;
+
+        });
+
+        return result;
+
+    }
+
+    // Blatant "inspiration" from https://codepen.io/Jacqueline34/pen/pyVoWr
+    function downloadCSV(array) {
+        const link = document.createElement('a');
+        let csv = convertArrayOfObjectsToCSV(array);
+        if (csv == null) return;
+
+        const filename = 'export.csv';
+
+        if (!csv.match(/^data:text\/csv/i)) {
+            csv = `data:text/csv;charset=utf-8,${csv}`;
+
+        }
+
+        link.setAttribute('href', encodeURI(csv));
+        link.setAttribute('download', filename);
+        link.click();
+
+    }
+
+
+    const Export = ({ onExport }) => <Button onClick={e => onExport(e.target.value)}>Export to CSV</Button>;
+
+
 
 
 
@@ -133,6 +191,8 @@ const TransactionTable = ({ data }) => {
         );
     }, [filterText, resetPaginationToggle]);
 
+    const actionsMemo = React.useMemo(() => <Export onExport={() => downloadCSV(data)} />, []);
+
 
 
 
@@ -140,7 +200,7 @@ const TransactionTable = ({ data }) => {
 
         < div >
 
-            <Button onClick={() => exportPDF()}>Transaction Report</Button>
+            <Button onClick={() => exportPDF()} className="left-[84%]">Transaction Report</Button>
             < DataTable
                 columns={columns}
                 data={filteredItems}
@@ -148,6 +208,7 @@ const TransactionTable = ({ data }) => {
                 paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
                 subHeader
                 subHeaderComponent={subHeaderComponentMemo}
+                actions={actionsMemo}
 
 
             />

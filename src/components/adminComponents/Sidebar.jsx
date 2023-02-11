@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { authChange, refreshToken } from "../../features/authSlice";
 import instance from "../../config/instance";
+import { Link } from "react-router-dom";
 const Sidebar = (props) => {
   const [open, setOpen] = useState(true);
   const navigate = useNavigate()
@@ -33,11 +34,13 @@ const Sidebar = (props) => {
           onClick={() => setOpen(!open)}
         />
         <div className="flex gap-x-4 items-center">
-          <img
-            src="logo.png"
-            className={`cursor-pointer duration-500 ${open && "rotate-[360deg]"
-              }`}
-          />
+          <Link to={"/adminLanding"}>
+            <img
+              src="logo.png"
+              className={`cursor-pointer duration-500 ${open && "rotate-[360deg]"
+                }`}
+            />
+          </Link>
           {/* <h1
             className={`text-white origin-left font-medium text-xl duration-200 ${!open && "scale-0"
               }`}

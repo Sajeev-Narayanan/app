@@ -24,6 +24,7 @@ import Chat from './pages/chat/Chat';
 import Forgotpassword from './pages/Forgotpassword';
 import Login from './pages/Login';
 import MyOrders from './pages/MyOrders';
+import PageNotFound from './pages/PageNotFound';
 import Completion from './pages/payment/Completion';
 import Payment from './pages/payment/Payment';
 import Profile from './pages/Profile';
@@ -97,6 +98,8 @@ function App() {
         </Route>
 
       </Route>
+      <Route path="*" element={<PageNotFound />} />
+
     </Routes>
 
   )
